@@ -17,15 +17,13 @@ public class GoogleLoginManager : Singletone<GoogleLoginManager>
 
                 if (success)
                 {
-#if UNITY_EDITOR
                     string idToken = Social.localUser.userName;
                     Debug.Log($"{idToken} Goolge Play Login Success");
                     task.SetResult(idToken);
-#elif UNITY_ANDROID
-                    string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();
+
+                 /*   string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();
                     Debug.Log($"{idToken} Goolge Play Login Success");
-                    task.SetResult(idToken);
-#endif
+                    task.SetResult(idToken);*/
 
                 }
                 else
@@ -57,8 +55,8 @@ task.SetResult("");
 #if UNITY_EDITOR
 
 #elif UNITY_ANDROID
-        ((PlayGamesPlatform)Social.Active).SignOut();
-        Debug.Log("Logout Success");
+    //    ((PlayGamesPlatform)Social.Active).SignOut();
+      //  Debug.Log("Logout Success");
 #endif
 
     }

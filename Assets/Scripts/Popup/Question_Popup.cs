@@ -36,5 +36,6 @@ public class Question_Popup : MonoBehaviour
     void OnClickCancel_Btn()
     {
         gameObject.SetActive(false);
+        
     }
 }

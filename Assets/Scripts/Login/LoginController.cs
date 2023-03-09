@@ -31,6 +31,7 @@ public class LoginController : MonoBehaviour
     void Initialize()
     {
         AddEvent();
+        BackendManager.Instance.StartBackend();
     }
 
     void AddEvent()
@@ -75,7 +76,13 @@ public class LoginController : MonoBehaviour
 
         if (!result.Equals(""))
         {
-            terms_view.gameObject.SetActive(true);
+            string _id = Social.localUser.id;
+            string _pw = Social.localUser.userName;
+            BackendManager.Instance.CustomLogin(_id,_pw,() =>
+            {
+                terms_view.gameObject.SetActive(true);
+            });
+           
         }
     }
 
@@ -105,8 +112,14 @@ public class LoginController : MonoBehaviour
     {
         if (createNickName_view.nickTextField.Checked_NickName())
         {
-            createNickName_view.gameObject.SetActive(false);
-            gameStartView.gameObject.SetActive(true);
+            if(googleLogin != null)
+            {
+                StopCoroutine(googleLogin);
+                googleLogin = null;
+            }
+
+            googleLogin = SaveNickName();
+            StartCoroutine(googleLogin);
         }
         else
         {
@@ -114,5 +127,20 @@ public class LoginController : MonoBehaviour
         }
     }
 
+    IEnumerator SaveNickName()
+    {
+        yield return new WaitForEndOfFrame();
+        string nickName = createNickName_view.nickTextField.GetInput_TextField().value;
+        BackendManager.Instance.UpdateNickname(nickName, () =>
+        {
+
+            createNickName_view.gameObject.SetActive(false);
+            gameStartView.gameObject.SetActive(true);
+        });
+
+
+    }
+
+    
     
 }

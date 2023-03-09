@@ -5567,7 +5567,7 @@ MonoBehaviour:
   savedAs: 
   selectOnTab: {fileID: 0}
   activeTextColor: {r: 0, g: 0, b: 0, a: 1}
-  caretColor: {r: 1, g: 1, b: 1, a: 0.8}
+  caretColor: {r: 0.98039216, g: 0.15686275, b: 0.15686275, a: 0.6}
   selectionColor: {r: 1, g: 0.8745098, b: 0.5529412, a: 0.5}
   onSubmit: []
   onChange: []
@@ -7295,7 +7295,7 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 4
-  mWidth: 108
+  mWidth: 112
   mHeight: 24
   mDepth: 5
   boundless: 0
@@ -7303,7 +7303,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 4.5
+  aspectRatio: 4.6666665
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 80052128c1fe846d18800c4b7caac783, type: 3}
   mFont: {fileID: 0}
