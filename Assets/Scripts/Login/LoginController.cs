@@ -20,6 +20,8 @@ public class LoginController : MonoBehaviour
     [SerializeField]
     private Question_Popup question_popup;
 
+    IEnumerator googleLogin;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,8 +59,26 @@ public class LoginController : MonoBehaviour
 
     void OnClickGoogleLogin_btn()
     {
-        terms_view.gameObject.SetActive(true);
+        if(googleLogin != null)
+        {
+            StopCoroutine(googleLogin);
+            googleLogin = null;
+        }
+        googleLogin = GoogleLogin();
+        StartCoroutine(googleLogin);
     }
+
+    IEnumerator GoogleLogin()
+    {
+        yield return new WaitForEndOfFrame();
+        string result = GoogleLoginManager.Instance.GoogleServiceLogin().Result;
+
+        if (!result.Equals(""))
+        {
+            terms_view.gameObject.SetActive(true);
+        }
+    }
+
 
     void OnClickAgree_btn()
     {
@@ -76,6 +96,7 @@ public class LoginController : MonoBehaviour
         question_popup.gameObject.SetActive(true);
         question_popup.Init(() => {
             gameStartView.gameObject.SetActive(false);
+            GoogleLoginManager.Instance.GoogleLogout();
             question_popup.gameObject.SetActive(false);
         },"로그아웃 하시겠습니까?\n로그아웃이 완료되면 첫 화면으로 돌아갑니다.");
     }
