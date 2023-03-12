@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "166863827853",
+    "project_id": "gomonproject-131a7",
+    "storage_bucket": "gomonproject-131a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166863827853:android:1ad4f0927d9de69ee303c4",
+        "android_client_info": {
+          "package_name": "com.gomon.projectg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "166863827853-3dacar4746rgmhjeo2ttorvvpprbihv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuhBjAthWLHvWKyBJ82utE33nfrsTyi6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "166863827853-3dacar4746rgmhjeo2ttorvvpprbihv1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

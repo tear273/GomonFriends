@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /*
  로그인 화면 컨트롤AddEvent()
@@ -30,6 +31,7 @@ public class LoginController : MonoBehaviour
 
     void Initialize()
     {
+        
         AddEvent();
         BackendManager.Instance.StartBackend();
     }
@@ -72,18 +74,17 @@ public class LoginController : MonoBehaviour
     IEnumerator GoogleLogin()
     {
         yield return new WaitForEndOfFrame();
-        string result = GoogleLoginManager.Instance.GoogleServiceLogin().Result;
-
-        if (!result.Equals(""))
+        string result = GoogleLoginManager.Instance.GoogleServiceLogin(() =>
         {
             string _id = Social.localUser.id;
             string _pw = Social.localUser.userName;
-            BackendManager.Instance.CustomLogin(_id,_pw,() =>
+            BackendManager.Instance.CustomLogin(_id, _pw, () =>
             {
                 terms_view.gameObject.SetActive(true);
             });
-           
-        }
+        }).Result;
+
+        
     }
 
 
@@ -95,7 +96,7 @@ public class LoginController : MonoBehaviour
 
     void OnClickGameStart_btn()
     {
-
+        SceneManager.LoadScene(1);
     }
 
     void OnClickLogout_btn()
