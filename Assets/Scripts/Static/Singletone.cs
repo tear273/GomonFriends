@@ -4,58 +4,34 @@ using UnityEngine;
 
 public class Singletone<T> : MonoBehaviour where T : MonoBehaviour
 {
-    // Check to see if we're about to be destroyed
-    private static bool m_ShuttingDown = false;
-    private static object m_Lock = new object();
-    private static T m_Instance;
+    private static T instance;
 
-    /// <summary>
-    /// Access singleton instance through this propriety.
-    /// </summary>
     public static T Instance
     {
         get
         {
-            if (m_ShuttingDown)
+            if (instance == null)
             {
-                Debug.LogWarning("[Singleton] Instance '" + typeof(T) +
-                    "' already destroyed. Returning null.");
-                return null;
-            }
+                instance = (T)FindObjectOfType(typeof(T));
 
-            lock (m_Lock)
-            {
-                if (m_Instance == null)
+                if (instance == null)
                 {
-                    // Search for existing instance.
-                    m_Instance = (T)FindObjectOfType(typeof(T));
-
-                    // Create new instance if one doesn't already exist.
-                    if (m_Instance == null)
-                    {
-                        // Need to create a new GameObject to attach the singleton to.
-                        var singletonObject = new GameObject();
-                        m_Instance = singletonObject.AddComponent<T>();
-                        singletonObject.name = typeof(T).ToString() + " (Singleton)";
-
-                        // Make instance persistent.
-                        DontDestroyOnLoad(singletonObject);
-                    }
+                    GameObject obj = new GameObject(typeof(T).Name, typeof(T));
+                    instance = obj.GetComponent<T>();
                 }
-
-                return m_Instance;
             }
+
+            return instance;
         }
     }
-
-    private void OnApplicationQuit()
+    private void Awake()
     {
-        m_ShuttingDown = true;
-    }
-
-
-    private void OnDestroy()
-    {
-        m_ShuttingDown = true;
+        //if (transform.parent != null && transform.root != null)
+        //    DontDestroyOnLoad(this.transform.root.gameObject);
+        //else
+        //    DontDestroyOnLoad(this.gameObject);
     }
 }
+
+
+

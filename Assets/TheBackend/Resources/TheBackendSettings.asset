@@ -19,7 +19,7 @@ MonoBehaviour:
   isAllPlatform: 1
   sendLogReport: 1
   rateCountActive: 0
-  timeOutSec: 100
+  timeOutSec: 30
   Version: 5.9.3
   autoRefreshToken: 1
   retryWhenClientRequestFailError: 1

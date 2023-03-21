@@ -1,0 +1,11 @@
+Features
+
+1. Step Counter also Known as Pedometer
+2. Shake Detector 
+3. Accelerometer
+4. Linear Acceleration
+5. Gravity
+6. Significant Motion
+7. Rotation Vector
+
+And more possible features to be added in the future :)

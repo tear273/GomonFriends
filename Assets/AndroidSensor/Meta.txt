@@ -1,0 +1,50 @@
+an  Android Plugin for Unity3d that will help you access Sensor features on Android devices with in unity3d.<br><br>
+
+This plugin will speeds up your work and saves a lot of time compare on creating your own plugin which requires learning, researching, coding and testing on how to make things work.<br><br>
+
+<STRONG>List of Features:</STRONG><br><br>
+
+1. Step Counter <STRONG>(Pedometer)</STRONG><br>
+2. Shake Detector<br><br>
+
+<STRONG>
+APRIL 2020</STRONG><br>
+<STRONG>NEW!! UPDATES Version: 1.7.3
+</STRONG><br>
+
+<STRONG>Added MORE of Sensors:</STRONG><br>
+<STRONG>Accelerator</STRONG><br>
+<STRONG>Gravity</STRONG><br>
+<STRONG>Linear Accelerator</STRONG><br>
+<STRONG>Rotation Vector</STRONG><br>
+<STRONG>Significant Motion</STRONG><br>
+<STRONG>With Demos</STRONG><br>
+<STRONG>Using aars library now!</STRONG><br><br>
+
+
+* Added Pedometer Service it will still count steps even you close the unity3d application or quit as long as you start the service before closing your app<br>
+
+* Added saving of step data each day like fitbit app but for step count only<br>
+
+* Added Auto run pedometer service on device boot<br>
+
+* Step Count and Step Data will not reset even restart the device<br>
+
+* Added lots of Method Helper to query step data and used date as the keyword<br><br>
+
+<STRONG>and more possible features to be added in the future</STRONG><br><br>
+
+<STRONG>Note: Does not extend UnityPlayerActivity</STRONG><br><br>
+
+<STRONG>Note: For C# Lovers only</STRONG><br><br>
+
+<STRONG> Note: this plugin will only work if your android device supports this features step counter, step detector and accelerometer.
+</STRONG><br><br>
+
+<STRONG>Our other product Android Ultimate Plugin:</STRONG><br>
+
+<p><a href="https://gigadrillgames.com/2020/03/13/android-ultimate-plugin/">Details </a><a href="https://docs.google.com/document/d/1QHM7Kr_ThVn-Q-olzUumBuZZiAnJDnICQHg3y_Ovpos/edit?usp=sharing"> | Documentation</a> <a href="https://youtu.be/Xg7-uia7yes"> | Video Tutorial Setup</a><br><br>
+
+<STRONG>For questions or suggestions or any feedback just contact us by email</STRONG> <br>
+
+<p><a href="mailto:gigadrillgames@gmail.com">gigadrillgames@gmail.com</a><br>

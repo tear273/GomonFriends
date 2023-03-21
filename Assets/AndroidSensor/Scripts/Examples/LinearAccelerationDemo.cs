@@ -1,0 +1,140 @@
+﻿using System;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class LinearAccelerationDemo : MonoBehaviour {
+
+	#region Fields
+	private SensorUtilsPlugin _sensorUtilsPlugin;
+	private LinearAccelerationPlugin _linearAccelerationPlugin;
+	public Text xText;
+	public Text yText;
+	public Text zText;
+	public Text sensitivityText;
+	public Slider sensitivitySlider;
+	public Text delayUpdateText;
+	public Slider delayUpdateSlider;
+	#endregion
+
+	#region Methods
+	// Use this for initialization
+	void Start (){
+		// don't allow the device to sleep
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+		
+		_sensorUtilsPlugin = SensorUtilsPlugin.GetInstance ();
+		_sensorUtilsPlugin.Init();
+		_sensorUtilsPlugin.SetDebug (0);
+		
+		_linearAccelerationPlugin = LinearAccelerationPlugin.GetInstance();
+		if (_sensorUtilsPlugin.HasGyroscope())
+		{
+			_linearAccelerationPlugin.Init( OnLinearAcceleration);
+			_linearAccelerationPlugin.SetDebug(0);
+			_linearAccelerationPlugin.RegisterSensorListener(SensorDelay.SENSOR_DELAY_NORMAL);
+		}else
+		{
+			Debug.LogWarning("Gyroscope on current device is not available!");	
+		}
+
+		SetSensitivitySlider();
+		SetDelayUpdateSlider();
+	}
+
+	private void SetSensitivitySlider(){
+		int sensitivity = (int)sensitivitySlider.value;
+		UpdateSensitivity(sensitivity);
+		Debug.Log("CheckSensitivitySlider value: " + sensitivity);
+	}
+
+	private void SetDelayUpdateSlider(){
+		int delayUpdate = (int)delayUpdateSlider.value;
+		UpdateDelayUpdate(delayUpdate);
+		Debug.Log("CheckDelayUpdateSlider value: " + delayUpdate);
+	}
+
+	public void OnSensitivitySliderChange(){
+		SetSensitivitySlider();
+	}
+
+	public void OnDelayUpdateSliderChange(){
+		SetDelayUpdateSlider();
+	}
+
+	private void OnApplicationPause(bool val){
+		if(val){
+			if(_linearAccelerationPlugin!=null){
+				_linearAccelerationPlugin.RemoveSensorListener();
+			}
+		}else{
+			if(_linearAccelerationPlugin!=null){
+				_linearAccelerationPlugin.RegisterSensorListener(SensorDelay.SENSOR_DELAY_NORMAL);
+			}
+		}
+	}
+	private void UpdateSensitivity(int sensitivity){
+		if(_linearAccelerationPlugin!=null){
+			_linearAccelerationPlugin.SetSensitivity(sensitivity);
+			if(sensitivityText!=null){
+				sensitivityText.text = String.Format("Sensitivity: {0}",sensitivity);
+			}
+		}
+	}
+
+	private void UpdateDelayUpdate(int delayUpdate){
+		if(_linearAccelerationPlugin!=null){
+			_linearAccelerationPlugin.SetDelayUpdate(delayUpdate);
+			if(delayUpdateText!=null){
+				delayUpdateText.text = String.Format("Delay Update: {0}",delayUpdate);
+			}
+		}
+	}
+
+
+	private void UpdateAccelerometerUIValues(string x, string y, string z)
+	{
+		if (xText!=null)
+		{
+			xText.text = $"X: {x}";
+		}
+				
+		if (yText!=null)
+		{
+			yText.text = $"Y: {y}";
+		}
+				
+		if (zText!=null)
+		{
+			zText.text = $"Z: {z}";
+		}
+	}
+	#endregion
+
+	#region Events
+	private void OnLinearAcceleration(string sensorData){
+		if (!string.IsNullOrEmpty(sensorData))
+		{
+			// convert data
+			LinearAccelerationData linearAccelerationData = JsonUtility.FromJson<LinearAccelerationData>(sensorData);
+			if (linearAccelerationData!=null)
+			{
+				UpdateAccelerometerUIValues(
+					linearAccelerationData.x.ToString(),
+					linearAccelerationData.y.ToString(),
+					linearAccelerationData.z.ToString()
+					);
+			}
+			else
+			{
+				UpdateAccelerometerUIValues("no data","no data","no data");
+			}
+		}
+		else
+		{
+			UpdateAccelerometerUIValues("no data","no data","no data");
+		}
+	}
+	#endregion
+}
+
+

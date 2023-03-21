@@ -46,13 +46,13 @@ public class SettingManager : Singletone<SettingManager>
 #if UNITY_EDITOR
 
 #elif UNITY_ANDROID
-        /*var config = new PlayGamesClientConfiguration.Builder()
+        var config = new PlayGamesClientConfiguration.Builder()
         .RequestIdToken()
         .Build();
 
         PlayGamesPlatform.InitializeInstance(config);
         PlayGamesPlatform.DebugLogEnabled = true;
-        PlayGamesPlatform.Activate();*/
+        PlayGamesPlatform.Activate();
 #endif
     }
 }

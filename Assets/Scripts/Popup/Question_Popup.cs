@@ -35,6 +35,7 @@ public class Question_Popup : MonoBehaviour
 
     void OnClickCancel_Btn()
     {
+        StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
         gameObject.SetActive(false);
         
     }

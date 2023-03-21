@@ -1318,7 +1318,7 @@ public abstract class UIBasicSprite : UIWidget
 		float uvRound = round * (uvWidth / width);
 
 		int slice = 1;
-		slice = Mathf.CeilToInt(round * 5);
+		slice = Mathf.CeilToInt(round / 2);
 		//slice = Mathf.Min(20, slice);
 		float[] xList = new float[slice + 1];
 		float[] yList = new float[slice + 1];

@@ -6,85 +6,87 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using Firebase.Auth;
 using System;
+using BackEnd;
 
 public class GoogleLoginManager : Singletone<GoogleLoginManager>
 {
 
     private FirebaseAuth auth;
 
-
-    public async Task<string> GoogleServiceLogin(Action func)
+    private void Start()
     {
-        TaskCompletionSource<string> task = new TaskCompletionSource<string>();
-        Debug.Log("GoogleServiceLogin");
-        if (!Social.localUser.authenticated)
-        {
-            Social.localUser.Authenticate(success => {
+        auth = FirebaseAuth.DefaultInstance;
+    }
 
-                if (success)
-                {
 
-                    Debug.Log("StartFirebase Login");
-
+    public void GoogleLogin(Action<BackendReturnObject> func)
+    {
 #if UNITY_EDITOR
-                    string idToken = Social.localUser.id;
-                    Debug.Log(Social.localUser.userName);
-                    //Debug.Log($"{idToken} Goolge Play Login Success");
-                    task.SetResult(idToken);
-
-#elif UNITY_ANDROID
-
-                    StartCoroutine(TryFirebaseLogin(func));
-                    /*string idToken = PlayGamesPlatform.Instance.GetIdToken();
-
-
-                    Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
-                    auth.SignInWithCredentialAsync(credential).ContinueWith(_task => {
-                        if (_task.IsCanceled)
-                        {
-                            Debug.LogError("SignInWithCredentialAsync was canceled.");
-                            return;
-                        }
-                        if (_task.IsFaulted)
-                        {
-                            Debug.LogError("SignInWithCredentialAsync encountered an error: " + _task.Exception);
-                            return;
-                        }
-                        Debug.Log($"{idToken} Goolge Play Login Success");
-                        task.SetResult(idToken);
-                        Debug.Log("Success!");
-                    });*/
-
+        SendQueue.Enqueue(Backend.BMember.GuestLogin, func);
+        return;
 #endif
 
-                    /*   string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();
-                       Debug.Log($"{idToken} Goolge Play Login Success");
-                       task.SetResult(idToken);*/
 
-                }
-                else
-                {
-                    Debug.Log("Fail");
-                    task.SetResult("");
-                }
-                
-            });
+        if (Social.localUser.authenticated)
+        {
+            var token = GetFederationToken();
+            if (token.Equals(string.Empty))
+            {
+                //StaticManager.UI.SetLoading(false);
 
+                Debug.LogError("GPGS 토큰이 존재하지 않습니다.");
+                StaticManager.UI.AlertUI.OpenUI("Error","GPGS 토큰이 존재하지 않습니다.");
+                return;
+            }
+            Debug.Log("Token" + token);
+            SendQueue.Enqueue(Backend.BMember.AuthorizeFederation, token, FederationType.Google, func);
         }
         else
         {
-            Debug.Log("Fail");
-#if UNITY_EDITOR
-            task.SetResult("Lerpz");
-#elif UNITY_ANDROID
-task.SetResult("");
-#endif
+            Social.localUser.Authenticate((bool success) =>
+            {
+                if (success)
+                {
+                    var token = GetFederationToken();
+                    if (token.Equals(string.Empty))
+                    {
+                       // StaticManager.UI.SetLoading(false);
 
+                        Debug.LogError("GPGS 토큰이 존재하지 않습니다.");
+                        StaticManager.UI.AlertUI.OpenUI("Error","GPGS 토큰이 존재하지 않습니다.");
+                        return;
+                    }
+                    //Backend.BMember.AuthorizeFederation(token, FederationType.Google, func);
+                    Debug.Log("Token" + token);
+                    SendQueue.Enqueue(Backend.BMember.AuthorizeFederation, token, FederationType.Google, func);
+                }
+                else
+                {
+                   // StaticManager.UI.SetLoading(false);
+                    Debug.LogError("GPGS 토큰이 존재하지 않습니다2.");
+                    StaticManager.UI.AlertUI.OpenUI("Error","GPGS 토큰이 존재하지 않습니다2.\n" + success.ToString());
+                }
+            });
+        }
+    }
 
+    private string GetFederationToken()
+    {
+#if UNITY_ANDROID
+        if (!PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            Debug.LogError("GPGS에 접속되어 있지 않습니다.");
+            return string.Empty;
         }
 
-        return await task.Task;
+        string _IDtoken = PlayGamesPlatform.Instance.GetIdToken();
+        return _IDtoken;
+#endif
+
+        return null;
     }
+
+    
 
     public void GoogleLogout()
     {
@@ -94,33 +96,8 @@ task.SetResult("");
         if (Social.localUser.authenticated) // 로그인 되어 있다면
         {
             PlayGamesPlatform.Instance.SignOut(); // Google 로그아웃
-            auth.SignOut(); // Firebase 로그아웃
         }
 #endif
 
-    }
-
-    IEnumerator TryFirebaseLogin(Action func)
-    {
-        while (string.IsNullOrEmpty(((PlayGamesLocalUser)Social.localUser).GetIdToken()))
-            yield return null;
-        string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();
-
-
-        Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
-        auth.SignInWithCredentialAsync(credential).ContinueWith(task => {
-            if (task.IsCanceled)
-            {
-                Debug.LogError("SignInWithCredentialAsync was canceled.");
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
-                return;
-            }
-            func();
-            Debug.Log("Success!");
-        });
     }
 }
