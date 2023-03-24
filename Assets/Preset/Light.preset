@@ -26,15 +26,15 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Color.r
-    value: 0.9117647
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Color.g
-    value: 0.79844815
+    value: 0.87779933
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Color.b
-    value: 0.4894031
+    value: 0.5330188
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Color.a
@@ -42,7 +42,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Intensity
-    value: 2.5
+    value: 1.5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Range
