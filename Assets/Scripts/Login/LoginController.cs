@@ -38,13 +38,26 @@ public class LoginController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Initialize();
+#if UNITY_EDITOR
+        Initialize("");
+#elif UNITY_ANDROID
+        RequestPermission();
+#endif
+
     }
 
-    void Initialize()
+    void RequestPermission()
+    {
+        var pluginClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject unityActivity = pluginClass.GetStatic<AndroidJavaObject>("currentActivity");
+        unityActivity.Call("RequestPermission");
+    }
+
+    void Initialize(string temp)
     {
         StaticManager.UI.alertUI = NGUITools.AddChild(NGUITools.GetRoot(gameObject), StaticManager.UI.origin_ComonPopup).GetComponent<Common_Popup>();
         StaticManager.UI.alertUI.gameObject.SetActive(false);
+        
         AddEvent();
 
 
@@ -157,9 +170,9 @@ public class LoginController : MonoBehaviour
 
         //Queue에 저장된 함수 순차적으로 실행
         NextStep(true, string.Empty);
-
+        
         yield return null;
-
+        //StaticManager.Sound.Initalized();
     }
 
     void OnClickLogout_btn()
@@ -193,11 +206,13 @@ public class LoginController : MonoBehaviour
                         {
                             if (callback.GetMessage().Contains("undefined nickname"))
                             {
-                               // errorText.text = StaticManager.Chart.Langauge.Localize(3);
+                                StaticManager.UI.AlertUI.OpenUI("Error", "닉네임이 비어 있습니다.");
+                                // errorText.text = StaticManager.Chart.Langauge.Localize(3);
                             }
                             else if (callback.GetMessage().Contains("bad beginning or end"))
                             {
-                               // errorText.text = StaticManager.Chart.Langauge.Localize(4);
+                                StaticManager.UI.AlertUI.OpenUI("Error", "닉네임에 비속어가 포함되어 있습니다.");
+                                // errorText.text = StaticManager.Chart.Langauge.Localize(4);
                             }
                             else
                             {
@@ -206,6 +221,7 @@ public class LoginController : MonoBehaviour
                         }
                         else if (callback.GetStatusCode() == "409")
                         {
+                            StaticManager.UI.AlertUI.OpenUI("Error", "중복된 닉네임 입니다.");
                             //errorText.text = StaticManager.Chart.Langauge.Localize(6);
                         }
                         else
@@ -322,7 +338,7 @@ public class LoginController : MonoBehaviour
 
                        // maxLoadingCount++;
                     }
-
+                    
                     isSuccess = true;
                 }
                 else

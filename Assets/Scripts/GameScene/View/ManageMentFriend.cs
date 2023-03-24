@@ -182,8 +182,14 @@ public class ManageMentFriend : MonoBehaviour
             {
                 if (!callback.IsSuccess())
                 {
+                    
                     StaticManager.Backend.backendGameData.FriendsData.SetFriends(item.Code, !siwth_Toggle.value);
                     siwth_Toggle.value = !siwth_Toggle.value;
+                }
+                else
+                {
+                    GameManager.Instance.Friends.Find(obj => obj.name.Equals(item.Code)).SetActive(siwth_Toggle.value);
+                    
                 }
                 
             });

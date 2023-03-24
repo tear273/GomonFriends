@@ -22,6 +22,7 @@ public class GoogleLoginManager : Singletone<GoogleLoginManager>
     public void GoogleLogin(Action<BackendReturnObject> func)
     {
 #if UNITY_EDITOR
+        //Backend.BMember.DeleteGuestInfo();
         SendQueue.Enqueue(Backend.BMember.GuestLogin, func);
         return;
 #endif
@@ -35,7 +36,7 @@ public class GoogleLoginManager : Singletone<GoogleLoginManager>
                 //StaticManager.UI.SetLoading(false);
 
                 Debug.LogError("GPGS 토큰이 존재하지 않습니다.");
-                StaticManager.UI.AlertUI.OpenUI("Error","GPGS 토큰이 존재하지 않습니다.");
+               // StaticManager.UI.AlertUI.OpenUI("Error","GPGS 토큰이 존재하지 않습니다.");
                 return;
             }
             Debug.Log("Token" + token);
@@ -53,7 +54,7 @@ public class GoogleLoginManager : Singletone<GoogleLoginManager>
                        // StaticManager.UI.SetLoading(false);
 
                         Debug.LogError("GPGS 토큰이 존재하지 않습니다.");
-                        StaticManager.UI.AlertUI.OpenUI("Error","GPGS 토큰이 존재하지 않습니다.");
+                       // StaticManager.UI.AlertUI.OpenUI("Error","GPGS 토큰이 존재하지 않습니다.");
                         return;
                     }
                     //Backend.BMember.AuthorizeFederation(token, FederationType.Google, func);
@@ -64,7 +65,7 @@ public class GoogleLoginManager : Singletone<GoogleLoginManager>
                 {
                    // StaticManager.UI.SetLoading(false);
                     Debug.LogError("GPGS 토큰이 존재하지 않습니다2.");
-                    StaticManager.UI.AlertUI.OpenUI("Error","GPGS 토큰이 존재하지 않습니다2.\n" + success.ToString());
+                  //  StaticManager.UI.AlertUI.OpenUI("Error","GPGS 토큰이 존재하지 않습니다2.\n" + success.ToString());
                 }
             });
         }

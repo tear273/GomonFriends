@@ -18,12 +18,23 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     List<AudioClip> lstSounds;
 
-    public void SetBackgroundSound(int sound)
+
+    public void Initalized()
+    {
+
+        SetBackgroundSound(StaticManager.Backend.backendGameData.SoundData.BackgroundVolum);
+        SetEffectSound(StaticManager.Backend.backendGameData.SoundData.EffectVolum);
+        BackgroundMuteSound(StaticManager.Backend.backendGameData.SoundData.IsOnBackgroundVolum);
+        EffectMuteSound(StaticManager.Backend.backendGameData.SoundData.IsOnEffectVolum);
+    }
+
+
+    public void SetBackgroundSound(float sound)
     {
         backgroundSound.volume = sound;
     }
 
-    public void SetEffectSound(int sound)
+    public void SetEffectSound(float sound)
     {
         effectSound.volume = sound;
     }

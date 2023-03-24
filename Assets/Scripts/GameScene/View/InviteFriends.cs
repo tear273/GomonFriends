@@ -75,7 +75,7 @@ public class InviteFriends : MonoBehaviour
         {
             if (callback.IsSuccess())
             {
-
+                GameManager.Instance.Friends.Find(obj => obj.name.Equals(item.Code)).SetActive(toggle.value);
             }
             else
             {

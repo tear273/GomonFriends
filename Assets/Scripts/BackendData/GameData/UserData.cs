@@ -14,6 +14,7 @@ namespace BackendData.GameData
         public int Ganet { get;  set; }
         public int Pedometor { get; set; }
         public int PurchaseFriendShipStar { get; set; }
+        public bool New { get; set; }
 
         protected override void InitializeData()
         {
@@ -21,12 +22,13 @@ namespace BackendData.GameData
             Ganet = 1;
             Pedometor = 0;
             PurchaseFriendShipStar = 0;
-
+            New = true;
 
 #if UNITY_EDITOR
             FriendShipStar = 1000000;
             Ganet = 40;
             Pedometor = 100000;
+            New = true;
 #endif
 
             ES3.Save("IsChangeData", false, GetTableName() + ".es3");
@@ -34,6 +36,7 @@ namespace BackendData.GameData
             ES3.Save("Ganet", Ganet, GetTableName() + ".es3");
             ES3.Save("Pedometor", Pedometor, GetTableName() + ".es3");
             ES3.Save("PurchaseFriendShipStar", PurchaseFriendShipStar, GetTableName() + ".es3");
+            ES3.Save("New", New, GetTableName() + ".es3");
 
         }
         
@@ -51,6 +54,7 @@ namespace BackendData.GameData
             param.Add("Ganet", Ganet);
             param.Add("Pedometor", Pedometor);
             param.Add("PurchaseFriendShipStar", PurchaseFriendShipStar);
+            param.Add("New", New);
 
             return param;
         }
@@ -64,6 +68,7 @@ namespace BackendData.GameData
             Ganet = (int)ES3.Load("Ganet", GetTableName() + ".es3");
             Pedometor = (int)ES3.Load("Pedometor", GetTableName() + ".es3");
             PurchaseFriendShipStar = (int)ES3.Load("PurchaseFriendShipStar", GetTableName() + ".es3");
+            New = (bool)ES3.Load("New", GetTableName() + ".es3");
         }
 
         public override string GetTableName()
@@ -105,13 +110,23 @@ namespace BackendData.GameData
                     gameDataJson["PurchaseFriendShipStar"] = 0;
                 PurchaseFriendShipStar = int.Parse(gameDataJson["PurchaseFriendShipStar"].ToString());
             }
+
+            if (ES3.KeyExists("New", GetTableName() + ".es3"))
+                New = ES3.Load<bool>("New", GetTableName() + ".es3");
+            else
+            {
                 
+                gameDataJson["New"] = true;
+                New = bool.Parse(gameDataJson["New"].ToString());
+            }
+
 
 
             ES3.Save("FriendShipStar", FriendShipStar, GetTableName() + ".es3");
             ES3.Save("Ganet", Ganet, GetTableName() + ".es3");
             ES3.Save("Pedometor", Pedometor, GetTableName() + ".es3");
             ES3.Save("PurchaseFriendShipStar", PurchaseFriendShipStar, GetTableName() + ".es3");
+            ES3.Save("New", New, GetTableName() + ".es3");
         }
 
         public void SaveLocalData()
@@ -121,6 +136,16 @@ namespace BackendData.GameData
             ES3.Save("Ganet", Ganet, GetTableName() + ".es3");
             ES3.Save("Pedometor", Pedometor, GetTableName() + ".es3");
             ES3.Save("PurchaseFriendShipStar", PurchaseFriendShipStar, GetTableName() + ".es3");
+            ES3.Save("New", New, GetTableName() + ".es3");
+        }
+
+        public void SetNew(bool value)
+        {
+            IsChangedData = true;
+            New = value;
+
+            //  GameManager.Instance.ActiveQuestIcon();
+            SaveLocalData();
         }
 
         public void SetPurchaseFriendShipStar(int value)

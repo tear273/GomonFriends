@@ -53,7 +53,8 @@ public class StaticManager : Singletone<StaticManager>
 
         UI.Initialize();
         Backend.Initialize();
-      //  AD.Initialize();
+        
+        //  AD.Initialize();
     }
 
    /* public void ChangeScene(string sceneName, FadeUI.FadeType fadeType = FadeUI.FadeType.ChangeToBlack, float duration = 1)

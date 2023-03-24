@@ -69,6 +69,7 @@ public class BackendManager : MonoBehaviour
                 isLoading = true;
 
                 StartCoroutine(StaticManager.Chart.Initialize());
+                
             }
             else
             {

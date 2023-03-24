@@ -92,6 +92,7 @@ public class ChangeStartPopup : MonoBehaviour
         {
             if (callback.IsSuccess())
             {
+                StaticManager.Sound.PlaySounds(SoundsType.GETSTAR);
                 GameManager.Instance.PedometerPlugin.LoadTotalStep();
                 GameManager.Instance.FriendsShip_Label.text = StaticManager.Backend.backendGameData.UserData.FriendShipStar.ToString();
                 StaticManager.UI.alertUI.OpenUI("Info", "우정별 " + purchaseStar + "개 구매 하셨습니다.");

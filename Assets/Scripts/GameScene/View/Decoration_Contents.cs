@@ -41,7 +41,7 @@ public class Decoration_Contents : MonoBehaviour
     string decoCode = "";
     int priceFrom = 0;
     int price = 0;
-
+    DecoChart.Item item;
     public void SetData(DecoChart.Item item)
     {
         Name = item.Name;
@@ -68,7 +68,13 @@ public class Decoration_Contents : MonoBehaviour
         DecoCode = item.Code;
         PriceFrom = item.From;
         price = item.Price;
-        
+
+        switch_Toggle.group = 100;
+        border_Toggle.group = 101;
+
+        this.item = item;
+
+
 
     }
 
@@ -180,7 +186,21 @@ public class Decoration_Contents : MonoBehaviour
 
     public void OnClickSwitch()
     {
+        
+        
+       
         StaticManager.Backend.backendGameData.DecoData.SetDeco(DecoCode,switch_Toggle.value);
+        StaticManager.Backend.backendGameData.DecoData.Update((callback) =>
+        {
+            if (callback.IsSuccess())
+            {
+
+                GameManager.Instance.Maps.Find(obj => obj.name.Equals(item.Code)).SetActive(switch_Toggle.value);
+                
+
+                Debug.LogError("스위치 저장 성공");
+            }
+        });
     }
 
 
@@ -193,6 +213,9 @@ public class Decoration_Contents : MonoBehaviour
     {
         EventDelegate _event = new EventDelegate(OnClickPurchase_Btn);
         purchase_btn.onClick.Add(_event);
+
+        _event = new EventDelegate(OnClickSwitch);
+        switch_Toggle.onChange.Add(_event);
     }
 
     void OnClickPurchase_Btn()

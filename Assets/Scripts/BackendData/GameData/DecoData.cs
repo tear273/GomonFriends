@@ -15,6 +15,9 @@ namespace BackendData.GameData
         protected override void InitializeData()
         {
             Deco = new Dictionary<string, bool>();
+            Deco.Add("D0001", true);
+            Deco.Add("D0007", true);
+            Deco.Add("D0012", true);
 
             ES3.Save("Deco", Deco, GetTableName() + ".es3");
         }

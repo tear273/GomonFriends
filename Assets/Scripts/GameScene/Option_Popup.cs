@@ -65,14 +65,21 @@ public class Option_Popup : MonoBehaviour
 
     private void OnEnable()
     {
-        background_slider.value = StaticManager.Backend.backendGameData.SoundData.BackgroundVolum;
+        /*background_slider.value = StaticManager.Backend.backendGameData.SoundData.BackgroundVolum;
         effect_slider.value = StaticManager.Backend.backendGameData.SoundData.EffectVolum;
-        NGUITools.BringForward(gameObject);
+        effect_Toggle.value = StaticManager.Backend.backendGameData.SoundData.IsOnEffectVolum;
+        background_Toggle.value = StaticManager.Backend.backendGameData.SoundData.IsOnBackgroundVolum;
+        NGUITools.BringForward(gameObject);*/
     }
 
     private void Start()
     {
         AddLisener();
+        background_slider.value = StaticManager.Backend.backendGameData.SoundData.BackgroundVolum;
+        effect_slider.value = StaticManager.Backend.backendGameData.SoundData.EffectVolum;
+        effect_Toggle.value = !StaticManager.Backend.backendGameData.SoundData.IsOnEffectVolum;
+        background_Toggle.value = !StaticManager.Backend.backendGameData.SoundData.IsOnBackgroundVolum;
+        NGUITools.BringForward(gameObject);
     }
 
     void AddLisener()
@@ -97,31 +104,41 @@ public class Option_Popup : MonoBehaviour
     {
         StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
         StaticManager.Sound.BackgroundMuteSound(!background_Toggle.value);
+        StaticManager.Backend.backendGameData.SoundData.IsOnBackgroundVolum = !background_Toggle.value;
     }
 
     void OnChangeEffectSound_Toggle()
     {
         StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
         StaticManager.Sound.EffectMuteSound(!effect_Toggle.value);
+        StaticManager.Backend.backendGameData.SoundData.IsOnEffectVolum = !effect_Toggle.value;
     }
 
 
     void OnChangeBackgroundSound()
     {
         StaticManager.Backend.backendGameData.SoundData.SetBackgroundVolum(background_slider.value);
-        StaticManager.Sound.backgroundSound.volume = background_slider.value;
+        StaticManager.Sound.SetBackgroundSound(background_slider.value);
+        
     }
 
     void OnChangeEffectSound()
     {
-        StaticManager.Backend.backendGameData.SoundData.SetEffectVolum(background_slider.value);
-        StaticManager.Sound.effectSound.volume = background_slider.value;
+        StaticManager.Backend.backendGameData.SoundData.SetEffectVolum(effect_slider.value);
+        StaticManager.Sound.SetEffectSound( effect_slider.value);
     }
 
     void OnClickClose_Btn()
     {
         StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
-        gameObject.SetActive(false);
+        StaticManager.Backend.backendGameData.SoundData.Update(callback =>
+        {
+            if (callback.IsSuccess())
+            {
+                gameObject.SetActive(false);
+            }
+        });
+        
     }
 
     

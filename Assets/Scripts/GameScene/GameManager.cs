@@ -43,9 +43,17 @@ public class GameManager : Singletone<GameManager>
 	UIButton friendShip_Button;
 	[SerializeField]
 	ChangeStartPopup changeStartPopup;
+	[SerializeField]
+	UIButton store_btn;
+
+	[SerializeField]
+	List<GameObject> maps;
+	[SerializeField]
+	List<GameObject> friends;
 
 
-
+	public List<GameObject> Friends => friends;
+	public List<GameObject> Maps => maps;
 	public FManagerManet_View FrendsManageMent_View => friendsManageMend_View;
 	public FriendsPurchase_Popup FriendsPurchase_Popup => friendsPurchase_Popup;
 	public UILabel Ganet_Label => ganet_Label;
@@ -65,10 +73,40 @@ public class GameManager : Singletone<GameManager>
 		StaticManager.UI.alertUI = NGUITools.AddChild(NGUITools.GetRoot(FrendsManageMent_View.gameObject), StaticManager.UI.origin_ComonPopup).GetComponent<Common_Popup>();
 		StaticManager.UI.alertUI.gameObject.SetActive(false);
 
+		StaticManager.Sound.Initalized();
+
 		InitPedometor();
 		AddEvents();
+		SetDeco();
+		VetaVersionPopup();
 		//SetInitData();
 		StartCoroutine(InitData());
+	}
+
+	void VetaVersionPopup()
+    {
+        if (StaticManager.Backend.backendGameData.UserData.New)
+        {
+			StaticManager.UI.alertUI.OpenUI("Info", "본 게임은 사전 체험판으로 정기적으로 업데이트 됩니다!");
+			StaticManager.Backend.backendGameData.UserData.SetNew(false);
+			StaticManager.Backend.backendGameData.UserData.Update((callback) => { });
+		}
+		
+    }
+
+	void SetDeco()
+    {
+		Dictionary<string,bool> items = StaticManager.Backend.backendGameData.DecoData.Deco;
+
+		foreach(string key in items.Keys)
+        {
+			var map = maps.Find(value => value.name.Equals(key));
+
+			if(map != null)
+            {
+				map.SetActive(items[key]);
+            }
+        }
 	}
 
 	IEnumerator InitData()
@@ -93,6 +131,15 @@ public class GameManager : Singletone<GameManager>
 
 		_event = new EventDelegate(OnClickFrendsConfiguration_Btn);
 		friendsConfiguration_btn.onClick.Add(_event);
+
+		_event = new EventDelegate(OnClickStore_Btn);
+		store_btn.onClick.Add(_event);
+	}
+
+	void OnClickStore_Btn()
+    {
+		StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
+		StaticManager.UI.alertUI.OpenUI("Info", "Comming Soon");
 	}
 
 	void OnClickFriendShipStar_Btn()

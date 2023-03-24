@@ -16,8 +16,10 @@ namespace BackendData.GameData
         protected override void InitializeData()
         {
             Friends = new Dictionary<string, bool>();
+            Friends.Add("F0001", true); 
+            Friends.Add("F0008", true);
 
-            ES3.Save("Friends", false, GetTableName() + ".es3");
+            ES3.Save("Friends", Friends, GetTableName() + ".es3");
         }
 
 
