@@ -195,7 +195,7 @@ public class Decoration_Contents : MonoBehaviour
             if (callback.IsSuccess())
             {
 
-                GameManager.Instance.Maps.Find(obj => obj.name.Equals(item.Code)).SetActive(switch_Toggle.value);
+                GameManager.Instance.Deco.Find(obj => obj.name.Equals(item.Code)).SetActive(switch_Toggle.value);
                 
 
                 Debug.LogError("스위치 저장 성공");

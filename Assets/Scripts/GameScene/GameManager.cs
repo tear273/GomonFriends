@@ -47,13 +47,13 @@ public class GameManager : Singletone<GameManager>
 	UIButton store_btn;
 
 	[SerializeField]
-	List<GameObject> maps;
+	List<GameObject> deco;
 	[SerializeField]
 	List<GameObject> friends;
 
 
 	public List<GameObject> Friends => friends;
-	public List<GameObject> Maps => maps;
+	public List<GameObject> Deco => deco;
 	public FManagerManet_View FrendsManageMent_View => friendsManageMend_View;
 	public FriendsPurchase_Popup FriendsPurchase_Popup => friendsPurchase_Popup;
 	public UILabel Ganet_Label => ganet_Label;
@@ -100,11 +100,11 @@ public class GameManager : Singletone<GameManager>
 
 		foreach(string key in items.Keys)
         {
-			var map = maps.Find(value => value.name.Equals(key));
+			var _deco = deco.Find(value => value.name.Equals(key));
 
-			if(map != null)
+			if(_deco != null)
             {
-				map.SetActive(items[key]);
+				_deco.SetActive(items[key]);
             }
         }
 	}
