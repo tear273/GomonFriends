@@ -28,6 +28,10 @@ public class StaticManager : Singletone<StaticManager>
 
     public static ChartManager Chart { get; private set; }
 
+    public static IAPManager IAP { get; private set; }
+
+    public static AdsManager Ads { get; private set; }
+
     //public static FirebaseManager Firebase { get; private set; }
 
     void Awake()
@@ -49,6 +53,8 @@ public class StaticManager : Singletone<StaticManager>
       //  IAP = GetComponentInChildren<IAPManager>();
        // Save = GetComponentInChildren<SaveManager>();
         Chart = GetComponentInChildren<ChartManager>();
+        IAP = GetComponentInChildren<IAPManager>();
+        Ads = GetComponentInChildren<AdsManager>();
        // Firebase = GetComponentInChildren<FirebaseManager>();
 
         UI.Initialize();

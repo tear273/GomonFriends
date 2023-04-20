@@ -31,6 +31,8 @@ public class GameManager : Singletone<GameManager>
 	[SerializeField]
 	Decoration_View decoration_View;
 	[SerializeField]
+	Store_Popup store_Popup;
+	[SerializeField]
 	UIWidget numContainer;
 
 	[SerializeField]
@@ -51,6 +53,9 @@ public class GameManager : Singletone<GameManager>
 	[SerializeField]
 	List<GameObject> friends;
 
+	[SerializeField]
+	UIPanel block_Panel;
+
 
 	public List<GameObject> Friends => friends;
 	public List<GameObject> Deco => deco;
@@ -61,6 +66,7 @@ public class GameManager : Singletone<GameManager>
 	public UIWidget NumContainer => numContainer;
 	public float orgin_NimContainer_Y;
 	public PedometerPlugin PedometerPlugin => _pedometerPlugin;
+	public UIPanel Block_Panel => block_Panel;
 
 
 	private void Start()
@@ -139,7 +145,7 @@ public class GameManager : Singletone<GameManager>
 	void OnClickStore_Btn()
     {
 		StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
-		StaticManager.UI.alertUI.OpenUI("Info", "Comming Soon");
+		store_Popup.gameObject.SetActive(true);
 	}
 
 	void OnClickFriendShipStar_Btn()

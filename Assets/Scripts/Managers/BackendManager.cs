@@ -14,6 +14,7 @@ public class BackendManager : MonoBehaviour
         public readonly BackendData.GameData.DecoData DecoData = new();
         public readonly BackendData.GameData.FriendsData FriendsData = new();
         public readonly BackendData.GameData.SoundData SoundData = new();
+        public readonly BackendData.GameData.PurchaseData PurchaseData = new();
 
         public readonly Dictionary<string, GameData> GameDataList = new Dictionary<string, GameData>();
         public BackendGameData()
@@ -22,6 +23,7 @@ public class BackendManager : MonoBehaviour
             GameDataList.Add("2", DecoData);
             GameDataList.Add("3", FriendsData);
             GameDataList.Add("4", SoundData);
+            GameDataList.Add("5", PurchaseData);
             /* GameDataList.Add("4", ProfileData);
              GameDataList.Add("5", ShopData);
              GameDataList.Add("6", MartData);
