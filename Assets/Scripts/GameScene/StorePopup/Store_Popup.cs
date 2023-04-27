@@ -7,6 +7,9 @@ public class Store_Popup : MonoBehaviour
     [SerializeField]
     UIButton close_btn;
 
+    [SerializeField]
+    UIToggle friends;
+
     private void Start()
     {
         Initalized();
@@ -15,6 +18,19 @@ public class Store_Popup : MonoBehaviour
     void Initalized()
     {
         AddListener();
+        if(StaticManager.UI.currState == CurrState.TUTORIAL)
+        {
+            StartCoroutine(ShowFriends());
+            
+        }
+    }
+
+    IEnumerator ShowFriends()
+    {
+        yield return new WaitForEndOfFrame();
+        friends.value = true;
+        yield return new WaitForEndOfFrame();
+        NGUITools.BringForward(GameManager.Instance.Tutorials.gameObject);
     }
 
     void AddListener()
@@ -23,7 +39,7 @@ public class Store_Popup : MonoBehaviour
         close_btn.onClick.Add(_event);
     }
 
-    void OnClickClose_Btn()
+    public void OnClickClose_Btn()
     {
         gameObject.SetActive(false);
     }

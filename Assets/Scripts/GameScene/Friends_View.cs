@@ -46,6 +46,13 @@ public class Friends_View : MonoBehaviour
         {
             InviteFriends _friends = NGUITools.AddChild(i % 2 == 0 ? leftGrid : rightGrid, _OriginInviteFriends).GetComponent<InviteFriends>();
             _friends.SetData(friends.Find(item => item.Code.Equals(key)), dic[key]);
+            if (StaticManager.UI.currState == CurrState.TUTORIAL && i == 0)
+            {
+                GameManager.Instance.Tutorials.fifthFunc = () =>
+                {
+                    _friends.toggle.value = true;
+                };
+            }
             i ++;
         }
 
@@ -68,11 +75,19 @@ public class Friends_View : MonoBehaviour
         leftGrid.GetComponent<UIGrid>().enabled = true;
         rightGrid.GetComponent<UIGrid>().enabled = true;
 
+        
     }
 
     void Initalized()
     {
         AddLisener();
+        StartCoroutine(Tutorial());
+    }
+
+    IEnumerator Tutorial()
+    {
+        yield return new WaitForEndOfFrame();
+        NGUITools.BringForward(GameManager.Instance.Tutorials.gameObject);
     }
 
     void AddLisener()
@@ -95,7 +110,7 @@ public class Friends_View : MonoBehaviour
         GameManager.Instance.FrendsManageMent_View.gameObject.SetActive(true);
     }
 
-    void OnClickClose_Btn()
+    public void OnClickClose_Btn()
     {
         StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
         gameObject.SetActive(false);

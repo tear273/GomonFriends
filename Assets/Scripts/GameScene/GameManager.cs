@@ -54,6 +54,9 @@ public class GameManager : Singletone<GameManager>
 	List<GameObject> friends;
 
 	[SerializeField]
+	Tutorial_Panel tutorial_Panel;
+
+	[SerializeField]
 	UIPanel block_Panel;
 
 
@@ -67,6 +70,7 @@ public class GameManager : Singletone<GameManager>
 	public float orgin_NimContainer_Y;
 	public PedometerPlugin PedometerPlugin => _pedometerPlugin;
 	public UIPanel Block_Panel => block_Panel;
+	public Tutorial_Panel Tutorials => tutorial_Panel;
 
 
 	private void Start()
@@ -85,8 +89,23 @@ public class GameManager : Singletone<GameManager>
 		AddEvents();
 		SetDeco();
 		VetaVersionPopup();
+		SetFriends();
 		//SetInitData();
 		StartCoroutine(InitData());
+
+		if(StaticManager.UI.currState == CurrState.TUTORIAL)
+        {
+			tutorial_Panel.Tutorials[0].SetActive(true);
+        }
+	}
+
+	void SetFriends()
+    {
+
+		foreach(string key in StaticManager.Backend.backendGameData.FriendsData.Friends.Keys)
+        {
+			Friends.Find(obj => obj.name.Equals(key)).SetActive(StaticManager.Backend.backendGameData.FriendsData.Friends[key]);
+		}
 	}
 
 	void VetaVersionPopup()
@@ -142,7 +161,7 @@ public class GameManager : Singletone<GameManager>
 		store_btn.onClick.Add(_event);
 	}
 
-	void OnClickStore_Btn()
+	public void OnClickStore_Btn()
     {
 		StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
 		store_Popup.gameObject.SetActive(true);
@@ -155,7 +174,7 @@ public class GameManager : Singletone<GameManager>
 
 	}
 
-	void OnClickFrendsConfiguration_Btn()
+	public void OnClickFrendsConfiguration_Btn()
     {
 		StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
 		frend_View.gameObject.SetActive(true);

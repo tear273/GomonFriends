@@ -10,8 +10,8 @@ public class InviteFriends : MonoBehaviour
     [SerializeField]
     UILabel on_Name_Label;
 
-    [SerializeField]
-    UIToggle toggle;
+    //[SerializeField]
+    public UIToggle toggle;
 
     [SerializeField]
     UITexture thumbNail;
@@ -67,7 +67,7 @@ public class InviteFriends : MonoBehaviour
         StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
     }
 
-    void OnChangeValueToggle()
+    public void OnChangeValueToggle()
     {
         
         StaticManager.Backend.backendGameData.FriendsData.SetFriends(item.Code, toggle.value);

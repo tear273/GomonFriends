@@ -126,13 +126,16 @@ public class LoginController : MonoBehaviour
         //새로 가입인 경우에는 StatusCode가 201, 기존 로그인일 경우에는 200이 리턴
         if (callback.GetStatusCode() == "201")
         {
+            StaticManager.UI.currState = CurrState.TUTORIAL;
             terms_view.gameObject.SetActive(true);
         }
         else
         {
+            StaticManager.UI.currState = CurrState.MAIN;
             //닉네임이 없을 경우
             if (string.IsNullOrEmpty(Backend.UserNickName))
             {
+                StaticManager.UI.currState = CurrState.TUTORIAL;
                 createNickName_view.gameObject.SetActive(true);
                 return;
             }

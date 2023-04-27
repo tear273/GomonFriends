@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CurrState
+{
+    TUTORIAL,
+    MAIN
+}
+
 public class UIManager : MonoBehaviour
 {
     public GameObject loadingObject;
     public GameObject origin_ComonPopup;
     public Common_Popup alertUI;
     private GameObject _loadingObject;
+    public CurrState currState = CurrState.TUTORIAL;
 
     public void SetLoading(bool isActive)
     {

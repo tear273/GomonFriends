@@ -28,6 +28,10 @@ public class Store_Friends_Panel : MonoBehaviour
         {
             Store_Friends friends = NGUITools.AddChild(friend_grid.gameObject, origin_store_Friends).GetComponent<Store_Friends>();
             friends.SetData(list[i]);
+            if(StaticManager.UI.currState == CurrState.TUTORIAL && i == 0)
+            {
+                GameManager.Instance.Tutorials.fourthFunc = friends.OnClickPurchase_Btn;
+            }
 
         }
         friend_grid.enabled = true;

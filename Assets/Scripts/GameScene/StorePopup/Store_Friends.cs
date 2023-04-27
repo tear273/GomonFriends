@@ -55,7 +55,7 @@ public class Store_Friends : MonoBehaviour
         }
     }
 
-    void OnClickPurchase_Btn()
+    public void OnClickPurchase_Btn()
     {
         PurchasePopup_Info info = new PurchasePopup_Info();
         info.info = item.Name + "을\n해당 가격에 구매 하시겠습니까?";
@@ -79,7 +79,19 @@ public class Store_Friends : MonoBehaviour
                             {
                                 GameManager.Instance.FriendsShip_Label.text = StaticManager.Backend.backendGameData.UserData.FriendShipStar.ToString();
                                 state = ContensState.on;
-                                StaticManager.UI.AlertUI.OpenUI("Info", item.Name + " 구매 완료!");
+                                if(StaticManager.UI.currState == CurrState.TUTORIAL)
+                                {
+                                    StaticManager.UI.AlertUI.OpenUI("Info", item.Name + " 구매 완료!",() =>
+                                    {
+                                        int num = GameManager.Instance.Tutorials.currNum;
+                                        GameManager.Instance.Tutorials.ShowTutorial(num);
+                                    });
+                                }
+                                else
+                                {
+                                    StaticManager.UI.AlertUI.OpenUI("Info", item.Name + " 구매 완료!");
+                                }
+                                
                                 GameManager.Instance.FriendsPurchase_Popup.gameObject.SetActive(false);
                             }
                             else
