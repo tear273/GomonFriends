@@ -33,6 +33,7 @@ public class Common_Popup : MonoBehaviour
 
     void OnClickConfirem_Btn()
     {
+        StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
         if(func != null)
         {
             func();

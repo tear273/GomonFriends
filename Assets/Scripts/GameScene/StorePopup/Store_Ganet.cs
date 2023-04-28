@@ -31,6 +31,7 @@ public class Store_Ganet : MonoBehaviour
 
     void OnClickPurchase()
     {
+        StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
         StaticManager.IAP.BuyGanet(item.ProductID, () => {
             int cal = StaticManager.Backend.backendGameData.UserData.Ganet + int.Parse(item.Num);
             StaticManager.Backend.backendGameData.UserData.SetGanet(cal);

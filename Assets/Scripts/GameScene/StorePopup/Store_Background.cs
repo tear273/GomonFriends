@@ -63,6 +63,7 @@ public class Store_Background : MonoBehaviour
 
     void OnClickPurchase_Btn()
     {
+        StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
         PurchasePopup_Info info = new PurchasePopup_Info();
         info.info = item.Name + "을\n해당 가격에 구매 하시겠습니까?";
         info.price =  item.Price.ToString();

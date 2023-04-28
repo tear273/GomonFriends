@@ -69,6 +69,7 @@ public class Store_Box : MonoBehaviour
 
     void OnClickFree_Button()
     {
+        StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
         var currNum = item.PossibleNumber - StaticManager.Backend.backendGameData.PurchaseData.GetFreeNum(item.Code);
         if(currNum > 0)
         {
