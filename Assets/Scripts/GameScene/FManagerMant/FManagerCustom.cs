@@ -21,6 +21,8 @@ public class FManagerCustom : MonoBehaviour
 
     [SerializeField]
     UIGrid animGrid;
+    [SerializeField]
+    UITexture charector_img;
 
     private void Start()
     {
@@ -41,7 +43,7 @@ public class FManagerCustom : MonoBehaviour
         for(int i=0; i<list.Count; i++)
         {
             CustomFriends custom = NGUITools.AddChild(friendsGrid.gameObject, _Origin_customFriends).GetComponent<CustomFriends>();
-            custom.SetItem(list[i]);
+            custom.SetItem(list[i],charector_img);
 
             if (i == 0)
             {

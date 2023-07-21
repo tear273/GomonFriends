@@ -12,14 +12,19 @@ public class Store_Friends : MonoBehaviour
 
     [SerializeField]
     UILabel exit_Name_Label;
+    [SerializeField]
+    UITexture exist_Image;
 
     [SerializeField]
     UILabel purchase_Name_Label;
     [SerializeField]
     UILabel purchase_Price_Label;
+    [SerializeField]
+    UITexture purchase_Image;
 
     [SerializeField]
     UIButton purchase_btn;
+    
 
     FriendsChart.Item item;
 
@@ -31,6 +36,9 @@ public class Store_Friends : MonoBehaviour
         purchase_Name_Label.text = item.Name;
         purchase_Price_Label.text = item.Price;
         state = StaticManager.Backend.backendGameData.FriendsData.Friends.ContainsKey(item.Code) ? ContensState.on : ContensState.unPurchase;
+        Texture image = Resources.Load<Texture>(item.FriendsPurchasePath);
+        exist_Image.mainTexture = image;
+        purchase_Image.mainTexture = image;
     }
 
     public ContensState state
@@ -62,7 +70,7 @@ public class Store_Friends : MonoBehaviour
         info.info = item.Name + "을\n해당 가격에 구매 하시겠습니까?";
         info.price = item.Price;
         info.moneyType = 1;
-        //info.thumbnail = Image;
+        info.thumbnail = exist_Image.mainTexture;
         info.func = () => {
             int price = int.Parse(item.Price);
             if (StaticManager.Backend.backendGameData.UserData.FriendShipStar >= price)

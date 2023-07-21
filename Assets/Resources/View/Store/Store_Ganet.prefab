@@ -1,5 +1,111 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &620648297357203079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1443242701703947544}
+  - component: {fileID: 4660120560658918665}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1443242701703947544
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620648297357203079}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 76, y: -111, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4462962728266317090}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4660120560658918665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620648297357203079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5c5ca47aa5c01740810b7c66662099f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftAnchor:
+    target: {fileID: 4462962728266317090}
+    relative: 0
+    absolute: 26
+  rightAnchor:
+    target: {fileID: 4462962728266317090}
+    relative: 1
+    absolute: -25
+  bottomAnchor:
+    target: {fileID: 4462962728266317090}
+    relative: 0
+    absolute: 61
+  topAnchor:
+    target: {fileID: 4462962728266317090}
+    relative: 1
+    absolute: -61
+  updateAnchors: 1
+  mColor: {r: 1, g: 1, b: 1, a: 1}
+  mPivot: 4
+  mWidth: 100
+  mHeight: 100
+  mDepth: 3
+  boundless: 0
+  mMat: {fileID: 0}
+  autoResizeBoxCollider: 0
+  hideIfOffScreen: 0
+  keepAspectRatio: 0
+  aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 0.19215687, g: 0.21176471, b: 0.4117647, a: 1}
+  mGradientBottom: {r: 0.21176471, g: 0.32156864, b: 0.48235294, a: 1}
+  mGradientLeft: {r: 1, g: 1, b: 1, a: 1}
+  mGradientRight: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  mRound: 20
+  mLTRound: 1
+  mRTRound: 1
+  mLBRound: 1
+  mRBRound: 1
+  mApplyLtR: 0
+  mApplyTtB: 1
+  mPersentGradientT: 1
+  mPersentGradientB: 1
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  mTexture: {fileID: 0}
+  mShader: {fileID: 4800000, guid: e75727d9555d9d14ca51d91908c681bc, type: 3}
+  mBorder: {x: 0, y: 0, z: 0, w: 0}
+  mFixedAspect: 0
 --- !u!1 &4462962727795917979
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +383,7 @@ MonoBehaviour:
   mPivot: 4
   mWidth: 151
   mHeight: 222
-  mDepth: 3
+  mDepth: 2
   boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
@@ -350,6 +456,7 @@ Transform:
   - {fileID: 4462962728261184282}
   - {fileID: 4462962729239608196}
   - {fileID: 4462962728523529198}
+  - {fileID: 1443242701703947544}
   m_Father: {fileID: 4462962729831424080}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -888,6 +995,7 @@ MonoBehaviour:
   ganetNum_Label: {fileID: 4462962728419228408}
   price_Label: {fileID: 4462962729514383909}
   purchase_btn: {fileID: 341839098571975449}
+  purchase_image: {fileID: 4660120560658918665}
 --- !u!1 &4462962729849364755
 GameObject:
   m_ObjectHideFlags: 0

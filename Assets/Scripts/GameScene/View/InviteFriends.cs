@@ -26,6 +26,8 @@ public class InviteFriends : MonoBehaviour
         SetName_Label = item.Name;
         SetToggle = IsOn;
         this.item = item;
+        Texture image = Resources.Load<Texture>(item.FriendsPath);
+        thumbNail.mainTexture = image;
     }
 
     public string SetName_Label
@@ -76,6 +78,7 @@ public class InviteFriends : MonoBehaviour
             if (callback.IsSuccess())
             {
                 GameManager.Instance.Friends.Find(obj => obj.name.Equals(item.Code)).SetActive(toggle.value);
+                GameManager.Instance.SetFrindsNum();
             }
             else
             {

@@ -41,12 +41,12 @@ public class SoundManager : MonoBehaviour
 
     public void BackgroundMuteSound(bool value)
     {
-        backgroundSound.mute = value;
+        backgroundSound.mute = !value;
     }
 
     public void EffectMuteSound(bool value)
     {
-        effectSound.mute = value;
+        effectSound.mute = !value;
     }
 
     public void PlaySounds(SoundsType type)

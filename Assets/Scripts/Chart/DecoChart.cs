@@ -20,8 +20,9 @@ public class DecoChart : MonoBehaviour
         public int From { get; private set; }
         public int Category { get; private set; }
         public string ObjName { get; private set; }
+        public string PurhaseTexturePath { get; private set; }
 
-        public Item(string name, string info, string url, string code, string price, string from, string category,string objName)
+        public Item(string name, string info, string url, string code, string price, string from, string category,string objName,string purhaseTexturePath)
         {
             Name = name;
             Info = info;
@@ -31,6 +32,7 @@ public class DecoChart : MonoBehaviour
             From = int.Parse(from);
             Category = int.Parse(category);
             ObjName = objName;
+            PurhaseTexturePath = purhaseTexturePath;
         }
     }
     
@@ -70,7 +72,7 @@ public class DecoChart : MonoBehaviour
         //클래스 리스트
         for (int i = 1; i < rowSize; i++)
         {
-            Item item = new Item(sentence[i, 0], sentence[i, 1], sentence[i, 2], sentence[i, 3], sentence[i, 4], sentence[i, 5], sentence[i, 6], sentence[i, 7]);
+            Item item = new Item(sentence[i, 0], sentence[i, 1], sentence[i, 2], sentence[i, 3], sentence[i, 4], sentence[i, 5], sentence[i, 6], sentence[i, 7], sentence[i, 8]);
             decoSheet.Add(item);
         }
 

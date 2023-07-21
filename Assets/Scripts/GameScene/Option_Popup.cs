@@ -77,8 +77,8 @@ public class Option_Popup : MonoBehaviour
         AddLisener();
         background_slider.value = StaticManager.Backend.backendGameData.SoundData.BackgroundVolum;
         effect_slider.value = StaticManager.Backend.backendGameData.SoundData.EffectVolum;
-        effect_Toggle.value = !StaticManager.Backend.backendGameData.SoundData.IsOnEffectVolum;
-        background_Toggle.value = !StaticManager.Backend.backendGameData.SoundData.IsOnBackgroundVolum;
+        effect_Toggle.value = StaticManager.Backend.backendGameData.SoundData.IsOnEffectVolum;
+        background_Toggle.value = StaticManager.Backend.backendGameData.SoundData.IsOnBackgroundVolum;
         NGUITools.BringForward(gameObject);
     }
 
@@ -103,14 +103,14 @@ public class Option_Popup : MonoBehaviour
     void OnChangeBackgroundSound_Toggle()
     {
         StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
-        StaticManager.Sound.BackgroundMuteSound(!background_Toggle.value);
+        StaticManager.Sound.BackgroundMuteSound(background_Toggle.value);
         StaticManager.Backend.backendGameData.SoundData.IsOnBackgroundVolum = !background_Toggle.value;
     }
 
     void OnChangeEffectSound_Toggle()
     {
         StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
-        StaticManager.Sound.EffectMuteSound(!effect_Toggle.value);
+        StaticManager.Sound.EffectMuteSound(effect_Toggle.value);
         StaticManager.Backend.backendGameData.SoundData.IsOnEffectVolum = !effect_Toggle.value;
     }
 

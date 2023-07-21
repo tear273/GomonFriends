@@ -59,6 +59,14 @@ public class GameManager : Singletone<GameManager>
 	[SerializeField]
 	UIPanel block_Panel;
 
+	[SerializeField]
+	SitDeco[] sitDecos;
+	[SerializeField]
+	public GameObject fire;
+
+	[SerializeField]
+	UIButton friendsSpeacker_btn;
+
 
 	public List<GameObject> Friends => friends;
 	public List<GameObject> Deco => deco;
@@ -71,6 +79,7 @@ public class GameManager : Singletone<GameManager>
 	public PedometerPlugin PedometerPlugin => _pedometerPlugin;
 	public UIPanel Block_Panel => block_Panel;
 	public Tutorial_Panel Tutorials => tutorial_Panel;
+	public SitDeco[] SitDecos => sitDecos;
 
 
 	private void Start()
@@ -99,6 +108,11 @@ public class GameManager : Singletone<GameManager>
         }
 	}
 
+	void SetMap()
+    {
+
+    }
+
 	void SetFriends()
     {
 
@@ -106,7 +120,22 @@ public class GameManager : Singletone<GameManager>
         {
 			Friends.Find(obj => obj.name.Equals(key)).SetActive(StaticManager.Backend.backendGameData.FriendsData.Friends[key]);
 		}
+		SetFrindsNum();
 	}
+
+	public void SetFrindsNum()
+    {
+
+		int num = 0;
+		for (int i = 0; i < Friends.Count; i++)
+		{
+			if (Friends[i].activeSelf)
+			{
+				num++;
+			}
+		}
+		friendsNum_Label.text = num.ToString();
+    }
 
 	void VetaVersionPopup()
     {
@@ -159,7 +188,21 @@ public class GameManager : Singletone<GameManager>
 
 		_event = new EventDelegate(OnClickStore_Btn);
 		store_btn.onClick.Add(_event);
+
+		_event = new EventDelegate(OnClickFirendsSpeacker_Btn);
+		friendsSpeacker_btn.onClick.Add(_event);
 	}
+
+	void OnClickFirendsSpeacker_Btn()
+    {
+		for(int i=0; i<Friends.Count; i++)
+        {
+            if (Friends[i].activeSelf)
+            {
+				Friends[i].GetComponent<AIFriends>().Speacker();
+            }
+        }
+    }
 
 	public void OnClickStore_Btn()
     {
@@ -281,37 +324,37 @@ public class GameManager : Singletone<GameManager>
 	private void OnLoadTotalStepCount(int totalStepCount)
 	{
 		print("OnLoadTotalStepCount = " + totalStepCount);
-		if(StaticManager.Backend.backendGameData.UserData.Pedometor == 0)
-        {
-			StaticManager.Backend.backendGameData.UserData.SetPedometor(totalStepCount);
-			StaticManager.Backend.backendGameData.UserData.Update((callback) =>
-			{
-                if (callback.IsSuccess())
-                {
-					StartCoroutine(SetText(totalStepCount  -  (StaticManager.Backend.backendGameData.UserData.PurchaseFriendShipStar + StaticManager.Backend.backendGameData.UserData.Pedometor)));
-				}
-                else
-                {
-					Debug.LogError("걸음수 저장 실패");
-					StaticManager.Backend.backendGameData.UserData.Pedometor = 0;
-					_pedometerPlugin.LoadTotalStep();
-				}
-			});
-
-        }
-        else
-        {
-			StartCoroutine(SetText(totalStepCount - (StaticManager.Backend.backendGameData.UserData.PurchaseFriendShipStar + StaticManager.Backend.backendGameData.UserData.Pedometor)));
-		}
-
-
-		
+		print("Pedometor = " + StaticManager.Backend.backendGameData.UserData.Pedometor);
+		StartCoroutine(SetText(totalStepCount - (StaticManager.Backend.backendGameData.UserData.PurchaseFriendShipStar)));
 
 	}
 
 	private void OnLoadPrevStepCount(int totalStepCount)
 	{
 		print("OnLoadPrevStepCount = " + totalStepCount);
+
+
+		if (StaticManager.Backend.backendGameData.UserData.Pedometor == 0)
+		{
+			StaticManager.Backend.backendGameData.UserData.SetPedometor(totalStepCount);
+			StaticManager.Backend.backendGameData.UserData.Update((callback) =>
+			{
+				if (callback.IsSuccess())
+				{
+					_pedometerPlugin.LoadTotalStep();
+				}
+				else
+				{
+					Debug.LogError("걸음수 저장 실패");
+					StaticManager.Backend.backendGameData.UserData.Pedometor = 0;
+				}
+			});
+
+		}
+		else
+		{
+			_pedometerPlugin.LoadTotalStep();
+		}
 	}
 
 	private void OnStepDetect()
@@ -323,8 +366,7 @@ public class GameManager : Singletone<GameManager>
 	public void LoadSteps()
 	{
 		_pedometerPlugin.LoadPrevTotalStep();
-		_pedometerPlugin.LoadTotalStep();
-		_pedometerPlugin.LoadStepToday();
+		
 
 		//_pedometerPlugin.LoadPrevTotalStep();
 		//_pedometerPlugin.LoadTotalStep();
@@ -334,15 +376,30 @@ public class GameManager : Singletone<GameManager>
 	private void OnLoadTotalStepToday(int stepCountToday)
 	{
 		print("OnLoadTotalStepToday = " + stepCountToday);
-		//StartCoroutine(SetText(stepCountToday));
+		/*int setp = StaticManager.Backend.backendGameData.UserData.Pedometor + stepCountToday;
+		StaticManager.Backend.backendGameData.UserData.SetPedometor(setp);
+		StaticManager.Backend.backendGameData.UserData.Update((callback) =>
+		{
+			if (callback.IsSuccess())
+			{
+				_pedometerPlugin.LoadTotalStep();
+			}
+			else
+			{
+				Debug.LogError("걸음수 저장 실패");
+				StaticManager.Backend.backendGameData.UserData.Pedometor = 0;
+			}
+		});*/
 
-		print("OnLoadTotalStepTodayEnd = " + stepCountToday);
+
+
 	}
 
 	private void OnStepCountToday(int totalStepToday)
 	{
 		print("OnStepCountToday = " + totalStepToday);
 		
+
 	}
 
 	IEnumerator SetText(int stepsToday)
@@ -360,7 +417,7 @@ public class GameManager : Singletone<GameManager>
 	private void OnStepCount(int totalStepToday)
 	{
 		print("OnStepCount = " + totalStepToday);
-		StartCoroutine(SetText(totalStepToday - (StaticManager.Backend.backendGameData.UserData.PurchaseFriendShipStar + StaticManager.Backend.backendGameData.UserData.Pedometor)));
+		StartCoroutine(SetText(totalStepToday - (StaticManager.Backend.backendGameData.UserData.PurchaseFriendShipStar)));
 		//todayPedometor_Label.text = totalStepToday.ToString();
 		print("OnStepCountEnd = " + totalStepToday);
 	}

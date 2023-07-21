@@ -17,14 +17,16 @@ public class GanetStoreChart : MonoBehaviour
         public string Price { get; private set; }
         public string Num { get; private set; }
         public string ProductID { get; private set; }
+        public string ImagePath { get; private set; }
 
-        public Item(string name, string type, string price, string num,string productID)
+        public Item(string name, string type, string price, string num,string productID,string imagePath)
         {
             Name = name;
             Type = int.Parse(type);
             Price = price;
             Num = num;
             ProductID = productID;
+            ImagePath = imagePath;
 
         }
     }
@@ -65,7 +67,7 @@ public class GanetStoreChart : MonoBehaviour
         //클래스 리스트
         for (int i = 1; i < rowSize; i++)
         {
-            Item item = new Item(sentence[i, 0], sentence[i, 1], sentence[i, 2], sentence[i, 3], sentence[i, 4]);
+            Item item = new Item(sentence[i, 0], sentence[i, 1], sentence[i, 2], sentence[i, 3], sentence[i, 4], sentence[i, 5]);
             ganetSheet.Add(item);
         }
 

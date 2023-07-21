@@ -12,6 +12,8 @@ public class Store_Background : MonoBehaviour
 
     [SerializeField]
     UILabel exit_Name_Label;
+    [SerializeField]
+    UITexture exist_Image;
 
     [SerializeField]
     UILabel purchase_Name_Label;
@@ -22,6 +24,8 @@ public class Store_Background : MonoBehaviour
 
     [SerializeField]
     UIButton purchase_btn;
+    [SerializeField]
+    UITexture purchase_Image;
 
     [SerializeField]
     Texture frendship;
@@ -37,6 +41,9 @@ public class Store_Background : MonoBehaviour
         priceType_Texture.mainTexture = item.From == 1 ? frendship : ganet;
         this.item = item;
         state = StaticManager.Backend.backendGameData.DecoData.Deco.ContainsKey(item.Code) ? ContensState.on : ContensState.unPurchase;
+        Texture image = Resources.Load<Texture>("UI/Deco/" + item.PurhaseTexturePath);
+        exist_Image.mainTexture = image;
+        purchase_Image.mainTexture = image;
     }
 
     public ContensState state
@@ -68,7 +75,7 @@ public class Store_Background : MonoBehaviour
         info.info = item.Name + "을\n해당 가격에 구매 하시겠습니까?";
         info.price =  item.Price.ToString();
         info.moneyType = item.From;
-        //info.thumbnail = Image;
+        info.thumbnail = exist_Image.mainTexture;
         info.func = () => {
             int price = item.Price;
             if (StaticManager.Backend.backendGameData.UserData.Ganet >= price)

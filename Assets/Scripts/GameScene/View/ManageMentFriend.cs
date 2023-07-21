@@ -134,6 +134,9 @@ public class ManageMentFriend : MonoBehaviour
         Info = item.Info;
         SubInfo = item.SubInfo;
         price = item.Price;
+        Texture image = Resources.Load<Texture>(item.FriendsPath);
+        lock_Image.mainTexture = image;
+        onOff_Image.mainTexture = image;
         SetState();
     }
 
@@ -203,7 +206,7 @@ public class ManageMentFriend : MonoBehaviour
         info.info = Name + " 프렌즈를\n해당 가격에 구매 하시겠습니?";
         info.price = price;
         info.moneyType = 1;
-
+        info.thumbnail = onOff_Image.mainTexture;
         info.func = () => {
             if (StaticManager.Backend.backendGameData.UserData.FriendShipStar >= int.Parse(item.Price) )
             {

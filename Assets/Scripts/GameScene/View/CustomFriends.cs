@@ -12,17 +12,34 @@ public class CustomFriends : MonoBehaviour
 
     [SerializeField]
     UIButton button;
+    [SerializeField]
+    UITexture icone;
 
     FriendsChart.Item item;
 
     public FriendsChart.Item Item => item;
 
     public UIButton Button => button;
+    UITexture charactor_Img;
 
-    public void SetItem(FriendsChart.Item item)
+    Texture selectImg;
+
+    public void SetItem(FriendsChart.Item item,UITexture charactor_image)
     {
         Name = item.Name;
         this.item = item;
+        Texture image = Resources.Load<Texture>(item.FriendsPath);
+        selectImg = Resources.Load<Texture>(item.FriendsPurchasePath);
+        icone.mainTexture = image;
+        charactor_Img = charactor_image;
+    }
+
+    public void ChangeToogle()
+    {
+        if (customFriends_Toggle.value)
+        {
+            charactor_Img.mainTexture = selectImg;
+        }
     }
 
     public bool CustomFriends_Toggle
@@ -30,6 +47,7 @@ public class CustomFriends : MonoBehaviour
         set
         {
             customFriends_Toggle.value = value;
+            
         }
     }
 

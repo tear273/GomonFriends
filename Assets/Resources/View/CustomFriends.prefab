@@ -169,6 +169,7 @@ MonoBehaviour:
   customFriends_Toggle: {fileID: 8258417381563058997}
   name_Label: {fileID: 600158712728014014}
   button: {fileID: -2312028330823273776}
+  icone: {fileID: 600158711924317690}
 --- !u!65 &1887595483059261040
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -211,7 +212,11 @@ MonoBehaviour:
   startsActive: 0
   instantTween: 0
   optionCanBeNone: 0
-  onChange: []
+  onChange:
+  - mTarget: {fileID: 2059599983449214626}
+    mMethodName: ChangeToogle
+    mParameters: []
+    oneShot: 0
   checkSprite: {fileID: 0}
   checkAnimation: {fileID: 0}
   eventReceiver: {fileID: 0}

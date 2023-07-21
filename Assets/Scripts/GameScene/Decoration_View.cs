@@ -25,6 +25,9 @@ public class Decoration_View : MonoBehaviour
     [SerializeField]
     GameObject _Origin_Decoration_Contents;
 
+    [SerializeField]
+    UIScrollView scrollview;
+
     public UIButton Close_Btn => close_btn;
 
     private void Start()
@@ -47,7 +50,7 @@ public class Decoration_View : MonoBehaviour
         }
 
         scroll_Grid.enabled = true;
-        
+        scrollview.ResetPosition();
     }
 
     void AddLisener()

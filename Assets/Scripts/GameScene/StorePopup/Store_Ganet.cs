@@ -12,6 +12,8 @@ public class Store_Ganet : MonoBehaviour
 
     [SerializeField]
     UIButton purchase_btn;
+    [SerializeField]
+    UITexture purchase_image;
 
     GanetStoreChart.Item item;
 
@@ -21,6 +23,8 @@ public class Store_Ganet : MonoBehaviour
 
         ganetNum_Label.text = item.Num + "개";
         price_Label.text = "₩ " + item.Price;
+        Texture image = Resources.Load<Texture>(item.ImagePath);
+        purchase_image.mainTexture = image;
     }
 
     private void Start()
