@@ -7,10 +7,10 @@ using UnityEngine.AI;
 enum AIAnim
 {
     Idle,
-    Jump,
-    LightaFire,
-    sit,
-    sitNSlip,
+    Sleep,
+    Dance,
+    Sit,
+    Pose,
     Walk
 }
 
@@ -42,6 +42,9 @@ public class AIFriends : MonoBehaviour
     [SerializeField]
     int animNum = 0;
 
+    [SerializeField]
+    AIAnim aiAnim = AIAnim.Idle;
+
     AnimationClip clip;
 
     SitDeco currSit = null;
@@ -53,231 +56,354 @@ public class AIFriends : MonoBehaviour
 
     IEnumerator StartAnimator()
     {
-        while (true)
+        animator.SetInteger(animState, 0);
+        animator.SetBool(walkEnd, true);
+        animator.SetBool(sitWalk, true);
+        yield return new WaitForSeconds(1);
+        animator.SetBool(walkEnd, false);
+        animator.SetBool(sitWalk, false);
+
+        Vector3 pos = transform.GetChild(0).transform.position;
+        pos.y = 0;
+        transform.GetChild(0).transform.position = pos;
+
+        float waiteTime = UnityEngine.Random.Range(1f,10f);
+        
+        yield return new WaitForSeconds(waiteTime);
+
+        animNum = UnityEngine.Random.Range(1, 101);
+        //animNum = 20;
+        if (0 < animNum && 10 >= animNum)
         {
-            time += Time.deltaTime;
+            aiAnim = AIAnim.Pose;
+        }
+        else if (10 < animNum && 80 >= animNum)
+        {
+            aiAnim = AIAnim.Walk;
+        }
+        else if (70 < animNum && 80 >= animNum)
+        {
+            aiAnim = AIAnim.Sit;
+        }
+        else if (80 < animNum && 90 >= animNum)
+        {
+            aiAnim = AIAnim.Sleep;
+        }
+        else
+        {
+            aiAnim = AIAnim.Dance;
+        }
+        
+        switch (aiAnim)
+        {
+            case AIAnim.Idle:
 
-            if (time > waiteTime && animator.GetBool(walkEnd) && animator.GetBool(sitWalk))
+                break;
+            case AIAnim.Sleep:
+                StartCoroutine(StartSleep());
+                break;
+            case AIAnim.Dance:
+                animator.SetInteger(animState, ((int)aiAnim));
+                StartCoroutine(StartDance());
+                break;
+            case AIAnim.Sit:
+                animator.SetInteger(animState, ((int)aiAnim));
+                StartCoroutine(StartSit());
+                break;
+            case AIAnim.Pose:
+                animator.SetInteger(animState, ((int)aiAnim));
+                StartCoroutine(StartPose());
+                break;
+            case AIAnim.Walk:
+                animator.SetInteger(animState, ((int)aiAnim));
+                StartCoroutine(StartWalk());
+                break;
+        }
+
+        
+    }
+
+    IEnumerator StartPose()
+    {
+        
+        yield return new WaitForEndOfFrame();
+
+        yield return new WaitForSeconds(10);
+        animator.SetBool(walkEnd, true);
+        StartCoroutine(StartAnimator());
+    }
+
+    IEnumerator StartWalk()
+    {
+        
+        Vector3 pos = transform.GetChild(0).position;
+        pos.x += UnityEngine.Random.Range(-3.0f, 3.0f);
+        pos.z += UnityEngine.Random.Range(-3.0f, 3.0f);
+        nav.SetDestination(pos);
+        yield return new WaitForEndOfFrame();
+
+        float m_time = 0;
+        while (m_time < 4)
+        {
+            Vector3 fpos = transform.GetChild(0).position;
+            fpos.y = 0;
+            pos.y = 0;
+//            print("sqrMagnitude, " + gameObject.name + " : " + (pos - fpos).magnitude);
+            if (Mathf.Abs( (pos - fpos).magnitude) >= 2.0f)
             {
-                animNum = UnityEngine.Random.Range(1, 101);
-                if (0 > animNum && 10 <= animNum)
-                {
-                    animNum = 4;
-                }else if(10 > animNum && 50 >= animNum)
-                {
-                    animNum = 5; 
-                }else if(50 > animNum && 70 >= animNum)
-                {
-                    animNum = 3;
-                }
-                else if (70 > animNum && 90 <= animNum)
-                {
-                    animNum = 1;
-                }
-                else
-                {
-                    animNum = 2;
-                }
-
-                int hh = int.Parse( DateTime.Now.ToString("HH"));
-
-                if(hh > 18 || hh < 7)
-                {
-                    if(animNum == 3)
-                    {
-                        animNum = 1;
-                    }
-                }
-                else
-                {
-                    if(animNum == 1)
-                    {
-                        animNum = 3;
-                    }
-                }
-                
-                time = 0;
-                animator.SetInteger(animState, animNum);
-                switch (animNum)
-                {
-                    case 0:
-                        waiteTime = animator.GetCurrentAnimatorStateInfo(0).length / 2;
-                        animator.SetBool(walkEnd, false);
-                        break;
-                    case 1:
-                        waiteTime = animator.GetCurrentAnimatorStateInfo(0).length / 2;
-                        for(int i=0; i<GameManager.Instance.SitDecos.Length; i++)
-                        {
-                            SitDeco friends = GameManager.Instance.SitDecos[i];
-                            if (friends.Friends == null)
-                            {
-                                nav.destination = friends.transform.position;
-                                friends.Friends = this;
-                                currSit = friends;
-                                animator.SetBool(walkEnd, false);
-                                animator.SetBool(sitWalk, false);
-                                break;
-                            }
-                        }
-
-                        if(currSit == null)
-                        {
-                            time = 100;
-                        }
-                        
-                        break;
-                    case 2:
-                        waiteTime = animator.GetCurrentAnimatorStateInfo(0).length / 2;
-                        
-                        animator.SetBool(walkEnd, false);
-                        break;
-                    case 3:
-                        
-                        waiteTime = 10;
-                        for (int i = 0; i < GameManager.Instance.SitDecos.Length; i++)
-                        {
-                            SitDeco friends = GameManager.Instance.SitDecos[i];
-                            if (friends.Friends == null)
-                            {
-                                nav.destination = friends.transform.position;
-                                friends.Friends = this;
-                                currSit = friends;
-                                animator.SetBool(walkEnd, false);
-                                animator.SetBool(sitWalk, false);
-                                break;
-                            }
-                        }
-                        
-                        break;
-                    case 4:
-                        animator.SetBool(walkEnd, false);
-                        waiteTime = 10;
-                        break;
-                    case 5:
-                        waiteTime = 3;
-                        animator.SetBool(walkEnd, false);
-                        Vector3 pos = transform.position;
-                        pos.x += UnityEngine.Random.Range(-3.0f, 3.0f);
-                        pos.z += UnityEngine.Random.Range(-3.0f, 3.0f);
-                        
-                        nav.SetDestination(pos);
-                        break;
-                }
-
-                yield return new WaitForSeconds(1);
-
+                controller.Move(nav.velocity * Time.deltaTime);
+            }
+            else
+            {
+                controller.Move(Vector3.zero);
+                break;
             }
 
-            switch (animNum)
-            {
-                case 1:
-                    if (time > waiteTime)
-                    {
-
-                        int hh = int.Parse(DateTime.Now.ToString("HH"));
-
-                        if (hh > 18 || hh < 7)
-                        {
-                            
-                            animator.SetBool(walkEnd, false);
-                        }
-                        else
-                        {
-                            currSit.Friends = null;
-                            currSit = null;
-                            animator.SetBool(walkEnd, true);
-                            Vector3 pos = transform.GetChild(0).transform.position;
-                            pos.y = 0;
-                            transform.GetChild(0).transform.position = pos;
-                        }
-                    }
-                    if (nav.remainingDistance - 1 > nav.stoppingDistance)
-                    {
-                        controller.Move(nav.velocity * Time.deltaTime);
-                        time = 0;
-                    }
-                    else
-                    {
-                        transform.rotation = Quaternion.LookRotation(GameManager.Instance.fire.transform.position - transform.position);
-                        animator.SetBool(sitWalk, true);
-                        Vector3 pos = transform.GetChild(0).transform.position;
-                        pos.y = 1;
-                        transform.GetChild(0).transform.position = pos;
-                    }
-                    break;
-                case 2:
-                    if (time > waiteTime)
-                    {
-                        animator.SetBool(walkEnd, true);
-                    }
-                    
-                    break;
-                case 3:
-
-
-                    if (time > waiteTime)
-                    {
-                        currSit.Friends = null;
-                        currSit = null;
-                        animator.SetBool(walkEnd, true);
-                        Vector3 pos = transform.GetChild(0).transform.position;
-                        pos.y = 0;
-                        transform.GetChild(0).transform.position = pos;
-                    }
-                    if (nav.remainingDistance - 1 > nav.stoppingDistance)
-                    {
-                        controller.Move(nav.velocity * Time.deltaTime);
-                        time = 0;
-                    }
-                    else
-                    {
-                        transform.rotation = Quaternion.LookRotation(GameManager.Instance.fire.transform.position - transform.position);
-                        Vector3 pos = transform.GetChild(0).transform.position;
-                        pos.y = 1;
-                        transform.GetChild(0).transform.position = pos;
-                        animator.SetBool(sitWalk, true);
-                    }
-                    break;
-                case 4:
-                    if (time > waiteTime)
-                    {
-                        animator.SetBool(walkEnd, true);
-                    }
-                    break;
-                case 5:
-                    if (nav.remainingDistance - 1 > nav.stoppingDistance)
-                    {
-                        controller.Move(nav.velocity * Time.deltaTime);
-                        animator.SetBool(walkEnd, false);
-                    }
-                    else
-                    {
-                        controller.Move(Vector3.zero);
-                        animator.SetBool(walkEnd, true);
-                        animator.SetInteger(animState, 0);
-                    }
-                    if (time > waiteTime)
-                    {
-                        animator.SetBool(walkEnd, true);
-                    }
-                    break;
-            }
-
+           
             yield return new WaitForEndOfFrame();
+            m_time += Time.deltaTime;
+        }
+        controller.Move(Vector3.zero);
+        animator.SetBool(walkEnd, true);
+        StartCoroutine(StartAnimator());
+    }
+
+    IEnumerator StartSit()
+    {
+        yield return new WaitForEndOfFrame();
+
+        for (int i = 0; i < GameManager.Instance.SitDecos.Length; i++)
+        {
+            SitDeco friends = GameManager.Instance.SitDecos[i];
+            if (friends.Friends == null)
+            {
+                nav.SetDestination(friends.transform.position);
+                friends.Friends = this;
+                currSit = friends;
+                animator.SetBool(walkEnd, false);
+                animator.SetBool(sitWalk, false);
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        yield return new WaitForEndOfFrame();
+        float mtime = 0;
+        while (mtime < 4)
+        {
+            if (nav.remainingDistance > nav.stoppingDistance)
+            {
+                controller.Move(nav.velocity * Time.deltaTime);
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(GameManager.Instance.fire.transform.position - transform.position);
+                Vector3 pos = transform.GetChild(0).transform.position;
+                pos.y = 1;
+                transform.GetChild(0).transform.position = pos;
+                animator.SetBool(sitWalk, true);
+
+                break;
+                
+            }
+            /*if(mtime > 3)
+            {
+                transform.rotation = Quaternion.LookRotation(GameManager.Instance.fire.transform.position - transform.position);
+                Vector3 pos = transform.GetChild(0).transform.position;
+                pos.y = 1;
+                transform.GetChild(0).transform.position = pos;
+                animator.SetBool(sitWalk, true);
+                break;
+            }*/
+
+            mtime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForSeconds(10);
+        if(currSit != null)
+        {
+            currSit.Friends = null;
+            currSit = null;
+        }
+        
+        animator.SetBool(walkEnd, true);
+        yield return new WaitForEndOfFrame();
+        animator.SetBool(walkEnd, false);
+        animator.SetInteger(animState, ((int)AIAnim.Walk));
+        StartCoroutine(StartWalk());
+        //StartCoroutine(StartAnimator());
+
+    }
+
+    IEnumerator StartSleep()
+    {
+        
+        yield return new WaitForEndOfFrame();
+
+        waiteTime = animator.GetCurrentAnimatorStateInfo(0).length;
+        for (int i = 0; i < GameManager.Instance.SitDecos.Length; i++)
+        {
+            SitDeco friends = GameManager.Instance.SitDecos[i];
+            if (friends.Friends == null)
+            {
+
+               
+                friends.Friends = this;
+                
+                currSit = friends;
+                animator.SetBool(walkEnd, false);
+                animator.SetBool(sitWalk, false);
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        yield return new WaitForEndOfFrame();
+
+        if (currSit != null)
+        {
+            nav.SetDestination(currSit.transform.position);
+            animator.SetInteger(animState, ((int)aiAnim));
+            float mtime = 0f;
+            while (true)
+            {
+                Vector3 sitPos = currSit.transform.position;
+                Vector3 fpos = transform.GetChild(0).position;
+
+                
+                if (Mathf.Abs((sitPos - fpos).sqrMagnitude) >= 2f)
+                {
+                    controller.Move(nav.velocity * Time.deltaTime);
+                }
+                else
+                {
+                    transform.rotation = Quaternion.LookRotation(GameManager.Instance.fire.transform.position - transform.position);
+                    animator.SetBool(sitWalk, true);
+                    Vector3 pos = transform.GetChild(0).transform.position;
+                    pos.y = 1;
+                    transform.GetChild(0).transform.position = pos;
+
+                    break;
+                }
+
+                /*if(mtime > 6)
+                {
+                    transform.rotation = Quaternion.LookRotation(GameManager.Instance.fire.transform.position - transform.position);
+                    animator.SetBool(sitWalk, true);
+                    Vector3 pos = transform.GetChild(0).transform.position;
+                    pos.y = 1;
+                    transform.GetChild(0).transform.position = pos;
+                    break;
+                }*/
+                mtime += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
+
+            int hh = int.Parse(DateTime.Now.ToString("HH"));
+
+            if (hh > 18 || hh < 7)
+            {
+
+                animator.SetBool(walkEnd, false);
+            }
+            else
+            {
+                float m_time = 0;
+                while(m_time < 10)
+                {
+                    transform.rotation = Quaternion.LookRotation(GameManager.Instance.fire.transform.position - transform.position);
+                    m_time += Time.deltaTime;
+
+                    yield return new WaitForEndOfFrame();
+                }
+
+                //yield return new WaitForSeconds(10);
+
+                if (currSit != null)
+                {
+                    currSit.Friends = null;
+                    currSit = null;
+                }
+
+                animator.SetBool(walkEnd, true);
+                animator.SetBool(sitWalk, false);
+                yield return new WaitForEndOfFrame();
+                animator.SetBool(walkEnd, false);
+                animator.SetInteger(animState, ((int)AIAnim.Walk));
+                StartCoroutine(StartWalk());
+            }
 
         }
+        else
+        {
+            animator.SetBool(walkEnd, true);
+            animator.SetBool(sitWalk, true);
+            yield return new WaitForEndOfFrame();
+            StartCoroutine(StartAnimator());
+        }
+        
+    }
+
+    IEnumerator StartDance()
+    {
+        yield return new WaitForSeconds(3);
+
+        
+        StartCoroutine(StartAnimator());
+    }
+
+    IEnumerator CorutionSpeaker()
+    {
+        nav.SetDestination(transform.position);
+        animator.SetInteger(animState, ((int)AIAnim.Idle));
+        if (animState == (int)AIAnim.Sleep || animState == (int)AIAnim.Sit)
+        {
+            animator.SetBool(walkEnd, true);
+            yield return new WaitForSeconds(0.5f);
+            animator.SetBool(sitWalk, true);
+            yield return new WaitForSeconds(0.5f);
+        }
+        else
+        {
+            animator.SetBool(walkEnd, true);
+            animator.SetBool(sitWalk, true);
+            yield return new WaitForSeconds(1);
+        }
+        
+
+        
+
+        Vector3 pos = transform.GetChild(0).transform.position;
+        pos.y = 0;
+        transform.GetChild(0).transform.position = pos;
+
+        if (currSit != null)
+        {
+            currSit.Friends = null;
+            currSit = null;
+        }
+
+        yield return new WaitForEndOfFrame();
+        animator.SetBool(walkEnd, false);
+        animator.SetBool(sitWalk, false);
+        animator.SetInteger(animState, ((int)AIAnim.Dance));
+        StartCoroutine(StartDance());
+
     }
 
 
     public void Speacker()
     {
-        animator.SetBool(walkEnd, true);
-        animator.SetBool(sitWalk, true);
+        if(aiAnim != AIAnim.Sleep && aiAnim != AIAnim.Sit)
+        {
+            StopAllCoroutines();
+            StartCoroutine(CorutionSpeaker());
+        }
+        
 
-        time = 0;
+        /*time = 0;
         animNum = 2;
         animator.SetInteger(animState, animNum);
-        waiteTime = animator.GetCurrentAnimatorStateInfo(0).length / 2;
+        waiteTime = animator.GetCurrentAnimatorStateInfo(0).length;
         animator.SetBool(walkEnd, false);
 
         Vector3 pos = transform.GetChild(0).transform.position;
@@ -287,7 +413,7 @@ public class AIFriends : MonoBehaviour
         {
             currSit.Friends = null;
             currSit = null;
-        }
+        }*/
 
     }
 }

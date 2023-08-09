@@ -63,6 +63,13 @@ public class GameManager : Singletone<GameManager>
 	SitDeco[] sitDecos;
 	[SerializeField]
 	public GameObject fire;
+	[SerializeField]
+	Material mat_night;
+	[SerializeField]
+	Material mat_day;
+	[SerializeField]
+	GameObject friendsSpeacker_btn_Block;
+
 
 	[SerializeField]
 	UIButton friendsSpeacker_btn;
@@ -94,11 +101,7 @@ public class GameManager : Singletone<GameManager>
 
 		StaticManager.Sound.Initalized();
 
-		InitPedometor();
-		AddEvents();
-		SetDeco();
-		VetaVersionPopup();
-		SetFriends();
+		
 		//SetInitData();
 		StartCoroutine(InitData());
 
@@ -106,7 +109,33 @@ public class GameManager : Singletone<GameManager>
         {
 			tutorial_Panel.Tutorials[0].SetActive(true);
         }
+
+		StartCoroutine(LightSetting());
 	}
+
+	IEnumerator LightSetting()
+    {
+        while (true)
+        {
+			int hh = int.Parse(DateTime.Now.ToString("HH"));
+
+			if (hh < 7 || hh > 18)
+			{
+
+				RenderSettings.skybox = mat_night;
+				DynamicGI.UpdateEnvironment();
+			}
+			else
+			{
+				RenderSettings.skybox = mat_day;
+				DynamicGI.UpdateEnvironment();
+			}
+			yield return new WaitForSeconds(3600);
+			
+        }
+    }
+
+
 
 	void SetMap()
     {
@@ -151,9 +180,10 @@ public class GameManager : Singletone<GameManager>
 	void SetDeco()
     {
 		Dictionary<string,bool> items = StaticManager.Backend.backendGameData.DecoData.Deco;
-
+		
 		foreach(string key in items.Keys)
         {
+			Debug.Log("DecoKey" + key);
 			var _deco = deco.Find(value => value.name.Equals(key));
 
 			if(_deco != null)
@@ -168,8 +198,17 @@ public class GameManager : Singletone<GameManager>
 		yield return new WaitForEndOfFrame();
 		friendsShip_Label.text = StaticManager.Backend.backendGameData.UserData.FriendShipStar.ToString();
 		ganet_Label.text = StaticManager.Backend.backendGameData.UserData.Ganet.ToString();
+		Debug.Log("InitPedometor");
+		InitPedometor();
+		Debug.Log("AddEvents");
+		AddEvents();
+		Debug.Log("SetDeco");
+		SetDeco();
+		Debug.Log("VetaVersionPopup");
+		VetaVersionPopup();
+		Debug.Log("SetFriends");
+		SetFriends();
 
-		
 	}
 
 	void AddEvents()
@@ -202,7 +241,9 @@ public class GameManager : Singletone<GameManager>
 				Friends[i].GetComponent<AIFriends>().Speacker();
             }
         }
-    }
+		friendsSpeacker_btn_Block.SetActive(true);
+
+	}
 
 	public void OnClickStore_Btn()
     {

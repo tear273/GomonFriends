@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using BackEnd;
 using LitJson;
+using Newtonsoft.Json;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -58,11 +60,13 @@ namespace BackendData.GameData
             if (!ES3.KeyExists("IsChangeData", GetTableName() + ".es3"))
                 ES3.Save("IsChangeData", false, GetTableName() + ".es3");
 
+            
+
             if (ES3.KeyExists("Deco", GetTableName() + ".es3"))
                 Deco = ES3.Load<Dictionary<string, bool>>("Deco", GetTableName() + ".es3");
 
             else
-                Deco = new Dictionary<string, bool>();
+                Deco = JsonConvert.DeserializeObject<Dictionary<string, bool>>(gameDataJson["Deco"].ToJson());
 
 
 
