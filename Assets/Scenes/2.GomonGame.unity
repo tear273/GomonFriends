@@ -2409,6 +2409,7 @@ MonoBehaviour:
   time: 0
   animNum: 0
   aiAnim: 0
+  speech: []
 --- !u!143 &97709665
 CharacterController:
   m_ObjectHideFlags: 0
@@ -5878,6 +5879,7 @@ MonoBehaviour:
   time: 0
   animNum: 0
   aiAnim: 0
+  speech: []
 --- !u!143 &248156170
 CharacterController:
   m_ObjectHideFlags: 0
@@ -6951,6 +6953,7 @@ MonoBehaviour:
   time: 0
   animNum: 0
   aiAnim: 0
+  speech: []
 --- !u!143 &310992779
 CharacterController:
   m_ObjectHideFlags: 0
@@ -8534,6 +8537,7 @@ MonoBehaviour:
   time: 0
   animNum: 0
   aiAnim: 0
+  speech: []
 --- !u!143 &387603684
 CharacterController:
   m_ObjectHideFlags: 0
@@ -11287,6 +11291,7 @@ MonoBehaviour:
   - {fileID: 1186839036}
   - {fileID: 2020795935}
   - {fileID: 483606977}
+  storeFriendsPanel: {fileID: 492274906}
 --- !u!1 &539881507
 GameObject:
   m_ObjectHideFlags: 0
@@ -27233,6 +27238,7 @@ MonoBehaviour:
   time: 0
   animNum: 0
   aiAnim: 0
+  speech: []
 --- !u!143 &1208703528
 CharacterController:
   m_ObjectHideFlags: 0
@@ -33798,6 +33804,7 @@ MonoBehaviour:
   time: 0
   animNum: 0
   aiAnim: 0
+  speech: []
 --- !u!1 &1491067450
 GameObject:
   m_ObjectHideFlags: 0
@@ -37078,6 +37085,7 @@ MonoBehaviour:
   time: 0
   animNum: 0
   aiAnim: 0
+  speech: []
 --- !u!143 &1606554693
 CharacterController:
   m_ObjectHideFlags: 0
@@ -38834,6 +38842,7 @@ MonoBehaviour:
   time: 0
   animNum: 0
   aiAnim: 0
+  speech: []
 --- !u!143 &1706366572
 CharacterController:
   m_ObjectHideFlags: 0
@@ -39442,6 +39451,7 @@ MonoBehaviour:
   time: 0
   animNum: 0
   aiAnim: 0
+  speech: []
 --- !u!143 &1750953710
 CharacterController:
   m_ObjectHideFlags: 0
@@ -41191,6 +41201,7 @@ MonoBehaviour:
   time: 0
   animNum: 0
   aiAnim: 0
+  speech: []
 --- !u!1 &1839606073
 GameObject:
   m_ObjectHideFlags: 0

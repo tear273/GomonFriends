@@ -30,11 +30,20 @@ public class Friends_View : MonoBehaviour
     private void Start()
     {
         Initalized();
+       // SetFriends();
+    }
+
+    private void OnEnable()
+    {
         SetFriends();
     }
 
     void SetFriends()
     {
+        leftGrid.transform.DestroyChildren();
+        rightGrid.transform.DestroyChildren();
+
+
         NGUITools.DestroyChildren(leftGrid.transform);
         NGUITools.DestroyChildren(rightGrid.transform);
 

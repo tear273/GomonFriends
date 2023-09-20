@@ -8,6 +8,7 @@ TagManager:
   - Summer
   - Autumn
   - Winter
+  - SpeechBubble
   layers:
   - Default
   - TransparentFX

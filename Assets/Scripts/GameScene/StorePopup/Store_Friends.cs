@@ -125,4 +125,15 @@ public class Store_Friends : MonoBehaviour
 
         GameManager.Instance.ShowPurchasePopup(info);
     }
+
+    public void ReSettingFriends()
+    {
+       // exit_Name_Label.text = item.Name;
+       // purchase_Name_Label.text = item.Name;
+       // purchase_Price_Label.text = item.Price;
+        state = StaticManager.Backend.backendGameData.FriendsData.Friends.ContainsKey(item.Code) ? ContensState.on : ContensState.unPurchase;
+        Texture image = Resources.Load<Texture>(item.FriendsPurchasePath);
+        exist_Image.mainTexture = image;
+        purchase_Image.mainTexture = image;
+    }
 }

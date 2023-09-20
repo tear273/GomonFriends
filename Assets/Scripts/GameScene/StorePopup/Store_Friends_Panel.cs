@@ -10,6 +10,7 @@ public class Store_Friends_Panel : MonoBehaviour
     [SerializeField]
     GameObject origin_store_Friends;
 
+    List<Store_Friends> friends = new List<Store_Friends>();
     private void Start()
     {
         Initalized();
@@ -33,7 +34,17 @@ public class Store_Friends_Panel : MonoBehaviour
                 GameManager.Instance.Tutorials.fourthFunc = friends.OnClickPurchase_Btn;
             }
 
+            this.friends.Add(friends);
+
         }
         friend_grid.enabled = true;
+    }
+
+    public void ReState()
+    {
+        for (int i = 0; i < friends.Count; i++)
+        {
+            friends[i].ReSettingFriends();
+        }
     }
 }

@@ -20,8 +20,9 @@ public class FriendsChart : MonoBehaviour
         public string Info { get; private set; }
         public string FriendsPath { get; private set; }
         public string FriendsPurchasePath { get; private set; }
+        public string[] Speech { get; private set; }
 
-        public Item(string name, string price, string skins, string code,string subInfo,string info,string friendsPath, string friendsPurchasePath)
+        public Item(string name, string price, string skins, string code,string subInfo,string info,string friendsPath, string friendsPurchasePath, string speech)
         {
             Name = name;
             Price = price;
@@ -31,6 +32,7 @@ public class FriendsChart : MonoBehaviour
             Info = info;
             FriendsPath = friendsPath;
             FriendsPurchasePath = friendsPurchasePath;
+            Speech = speech.Split("|");
 
         }
     }
@@ -71,7 +73,7 @@ public class FriendsChart : MonoBehaviour
         //클래스 리스트
         for (int i = 1; i < rowSize; i++)
         {
-            Item item = new Item(sentence[i, 0], sentence[i, 1], sentence[i, 2], sentence[i, 3], sentence[i, 4], sentence[i, 5], sentence[i, 6], sentence[i, 7]);
+            Item item = new Item(sentence[i, 0], sentence[i, 1], sentence[i, 2], sentence[i, 3], sentence[i, 4], sentence[i, 5], sentence[i, 6], sentence[i, 7],sentence[i,8]);
             friendsSheet.Add(item);
         }
 

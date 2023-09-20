@@ -144,13 +144,24 @@ public class GameManager : Singletone<GameManager>
 
 	void SetFriends()
     {
-
-		foreach(string key in StaticManager.Backend.backendGameData.FriendsData.Friends.Keys)
+		SetFriendsSpeech();
+		foreach (string key in StaticManager.Backend.backendGameData.FriendsData.Friends.Keys)
         {
 			Friends.Find(obj => obj.name.Equals(key)).SetActive(StaticManager.Backend.backendGameData.FriendsData.Friends[key]);
 		}
 		SetFrindsNum();
+		
 	}
+
+	void SetFriendsSpeech()
+    {
+		for(int i=0; i<StaticManager.Chart.Friends.friendsSheet.Count; i++)
+        {
+			AIFriends af = Friends.Find(obj => obj.name.Equals(StaticManager.Chart.Friends.friendsSheet[i].Code)).GetComponent<AIFriends>();
+			af.speech = StaticManager.Chart.Friends.friendsSheet[i].Speech;
+
+		}
+    }
 
 	public void SetFrindsNum()
     {

@@ -12,6 +12,9 @@ public class Store_Popup : MonoBehaviour
 
     [SerializeField]
     GameObject[] bottom_Items;
+
+    [SerializeField]
+    Store_Friends_Panel storeFriendsPanel;
     private void Start()
     {
         Initalized();
@@ -53,6 +56,11 @@ public class Store_Popup : MonoBehaviour
              _event = new EventDelegate(PlayButtonsound);
 
             trigger.onClick.Add(_event);
+
+            if(i == 1)
+            {
+                trigger.onClick.Add(new EventDelegate(storeFriendsPanel.ReState));
+            }
         }
     }
 
@@ -60,5 +68,10 @@ public class Store_Popup : MonoBehaviour
     {
         StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
         gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        storeFriendsPanel.ReState();
     }
 }

@@ -49,9 +49,64 @@ public class AIFriends : MonoBehaviour
 
     SitDeco currSit = null;
 
+
+    SpeachBubble speechObj = null;
+
+    public string[] speech;
+    private void OnDisable()
+    {
+        Destroy(speechObj.gameObject);
+    }
+
+    private void Update()
+    {
+        Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);
+        Vector3 uiPos = UICamera.mainCamera.ViewportToWorldPoint(pos);
+        uiPos.z = 0;
+        speechObj.transform.position = uiPos;
+
+        Vector3 local = speechObj.transform.localPosition;
+        local.y += speechObj.background.height + 70;
+        local.x -= 60;
+        speechObj.transform.localPosition = local;
+
+        speechObj.background.width = speechObj.text.width + 30;
+        speechObj.background.height = speechObj.text.height + 50;
+    }
+
     private void OnEnable()
     {
         StartCoroutine(StartAnimator());
+        
+
+        GameObject speech = Resources.Load("UI/Friends/SpeechBubble") as GameObject;
+        
+        speechObj = NGUITools.AddChild(GameObject.Find("UI Root"), speech).GetComponent<SpeachBubble>();
+        
+
+        int num = GameObject.FindGameObjectsWithTag("SpeechBubble").Length;
+
+        speechObj.background.depth = num * 2;
+        speechObj.text.depth = num * 2 + 1;
+        StartCoroutine(SpeechBubble());
+    }
+
+    IEnumerator SpeechBubble()
+    {
+        
+        speechObj.gameObject.SetActive(true);
+        int index = UnityEngine.Random.Range(0, speech.Length);
+        speechObj.text.text = speech[index].Replace("\\n", "\n");
+
+        yield return new WaitForSeconds(1.3f);
+
+        speechObj.gameObject.SetActive(false);
+
+
+        int waitTime = UnityEngine.Random.Range(8, 13);
+
+        yield return new WaitForSeconds(waitTime);
+        StartCoroutine(SpeechBubble());
     }
 
     IEnumerator StartAnimator()
