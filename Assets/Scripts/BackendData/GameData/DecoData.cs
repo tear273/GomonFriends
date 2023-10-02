@@ -21,6 +21,7 @@ namespace BackendData.GameData
             Deco.Add("D0007", true);
             Deco.Add("D0012", true);
 
+            ES3.Save("IsChangeData", false, GetTableName() + ".es3");
             ES3.Save("Deco", Deco, GetTableName() + ".es3");
         }
 

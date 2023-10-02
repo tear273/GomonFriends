@@ -30,6 +30,9 @@ public class Decoration_View : MonoBehaviour
 
     public UIButton Close_Btn => close_btn;
 
+
+    [SerializeField]
+    List<Decoration_Contents> lstDecoration_Contents = new List<Decoration_Contents>();
     private void Start()
     {
         AddLisener();
@@ -39,18 +42,29 @@ public class Decoration_View : MonoBehaviour
     void DecoListSetting(int cate)
     {
         List<DecoChart.Item> items = StaticManager.Chart.Deco.decoSheet;
-        
+        lstDecoration_Contents.Clear();
+
+
         for (int i=0; i<items.Count; i++)
         {
             if(items[i].Category == cate)
             {
                 Decoration_Contents contents = NGUITools.AddChild(scroll_Grid.gameObject, _Origin_Decoration_Contents).GetComponent<Decoration_Contents>();
                 contents.SetData(items[i]);
+                lstDecoration_Contents.Add(contents);
             }
         }
 
         scroll_Grid.enabled = true;
         scrollview.ResetPosition();
+    }
+
+    private void OnEnable()
+    {
+        for(int i=0; i<lstDecoration_Contents.Count; i++)
+        {
+            lstDecoration_Contents[i].ReState();
+        }
     }
 
     void AddLisener()

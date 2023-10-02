@@ -31,47 +31,97 @@ public class FManagerCustom : MonoBehaviour
 
     void Initalized()
     {
-        SetFriends();
+       // SetFriends();
         FriendsAnimTest();
     }
 
-   
+    public void ReSetting()
+    {
+        SetFriends();
+    }
+
+
 
     void SetFriends() {
+
+        friendsGrid.transform.DestroyChildren();
         List<FriendsChart.Item> list = StaticManager.Chart.Friends.friendsSheet;
+        Dictionary<string, bool> purchase = StaticManager.Backend.backendGameData.FriendsData.Friends;
 
         for(int i=0; i<list.Count; i++)
         {
-            CustomFriends custom = NGUITools.AddChild(friendsGrid.gameObject, _Origin_customFriends).GetComponent<CustomFriends>();
-            custom.SetItem(list[i],charector_img);
-
-            if (i == 0)
+            if (purchase.ContainsKey(list[i].Code))
             {
-                custom.CustomFriends_Toggle = true;
+                CustomFriends custom = NGUITools.AddChild(friendsGrid.gameObject, _Origin_customFriends).GetComponent<CustomFriends>();
+                custom.SetItem(list[i], charector_img);
+
+                if (i == 0)
+                {
+                    custom.CustomFriends_Toggle = true;
+                    FilterSkin(custom);
+
+                }
+
+                EventDelegate _event = new EventDelegate(() =>
+                {
+                    StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
+                    FilterSkin(custom);
+                });
+                custom.Button.onClick.Add(_event);
             }
-
-            EventDelegate _event = new EventDelegate(() =>
-            {
-                StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
-                SetSkin(custom.Item.Skins);
-            });
-            custom.Button.onClick.Add(_event);
+           
         }
 
         friendsGrid.enabled = true;
 
     }
 
-    void SetSkin(string[] items)
+    void FilterSkin(CustomFriends custom)
+    {
+        List<SkinChart.Item> items = StaticManager.Chart.SkinChart.skinSheet;
+        Dictionary<string, List<string>> skinData = StaticManager.Backend.backendGameData.FriendsData.Skin;
+        List<SkinChart.Item> realItem = new List<SkinChart.Item>();
+
+        realItem.Add(items.Find(x => x.Code == (custom.Item.Code + "_0")));
+
+        if (skinData.ContainsKey(custom.Item.Code))
+        {
+            List<string> skins = skinData[custom.Item.Code];
+            for (int j = 0; j < skins.Count; j++)
+            {
+                realItem.Add(items.Find(x => x.Code == skins[j]));
+            }
+        }
+
+        SetSkin(realItem);
+    }
+
+    void SetSkin(List<SkinChart.Item> items)
     {
         NGUITools.DestroyChildren(skinGrid.transform);
-        for (int i=0; i<items.Length; i++)
+        Dictionary<string, string> conSkins = StaticManager.Backend.backendGameData.FriendsData.ConnectSkin;
+        for (int i=0; i<items.Count; i++)
         {
             FriendsSkin skin = NGUITools.AddChild(skinGrid.gameObject, _Origin_FriendSkin).GetComponent<FriendsSkin>();
-            if (i == 0)
+            skin.SetItem(items[i], charector_img);
+
+
+            if (conSkins.ContainsKey(items[i].OriginCode))
             {
-                skin.Toggle = true;
+                if(conSkins[items[i].OriginCode] == items[i].Code)
+                {
+                    skin.Toggle = true;
+                }
             }
+            else
+            {
+                if (i == 0)
+                {
+                    skin.Toggle = true;
+                }
+            }
+
+            
         }
         skinGrid.enabled = true;
     }

@@ -66,6 +66,7 @@ public class FManagerManet_View : MonoBehaviour
         if (custom_Toggle.value)
         {
             StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
+            friendsManagerCustom.ReSetting();
         }
     }
 

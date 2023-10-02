@@ -12,12 +12,14 @@ public class ChartManager : MonoBehaviour
     [SerializeField] private FriendsChart friendsChart;
     [SerializeField] private GanetStoreChart ganetStoreChart;
     [SerializeField] private BoxChart boxChart;
+    [SerializeField] private SkinChart skinChart;
 
 
     public DecoChart Deco => decoChart;
     public FriendsChart Friends => friendsChart;
     public GanetStoreChart GanetStore => ganetStoreChart;
     public BoxChart BoxChart => boxChart;
+    public SkinChart SkinChart => skinChart;
 
 
 
@@ -39,6 +41,10 @@ public class ChartManager : MonoBehaviour
         yield return new WaitUntil(() => GanetStore.isLoading);
 
         BoxChart.Initialize();
+
+        yield return new WaitUntil(() => BoxChart.isLoading);
+
+        skinChart.Initialize();
 
         yield return new WaitUntil(() => BoxChart.isLoading);
 

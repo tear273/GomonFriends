@@ -9,6 +9,9 @@ public class Store_Place_Panel : MonoBehaviour
     [SerializeField]
     GameObject origin_Store_Background;
 
+
+    [SerializeField]
+    List<Store_Background> lstStoreBackground;
     private void Start()
     {
         Initalized();
@@ -28,10 +31,21 @@ public class Store_Place_Panel : MonoBehaviour
             
                 Store_Background contents = NGUITools.AddChild(grid.gameObject, origin_Store_Background).GetComponent<Store_Background>();
                 contents.SetData(items[i]);
-            
+            lstStoreBackground.Add(contents);
+
+
         }
 
         grid.enabled = true;
 
     }
+
+    private void OnEnable()
+    {
+        for(int i=0; i<lstStoreBackground.Count; i++)
+        {
+            lstStoreBackground[i].SetDataState();
+        }
+    }
+
 }

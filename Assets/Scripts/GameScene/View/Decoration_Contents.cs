@@ -327,4 +327,23 @@ public class Decoration_Contents : MonoBehaviour
 
         GameManager.Instance.ShowPurchasePopup(info);
     }
+
+    public void ReState()
+    {
+        if (StaticManager.Backend.backendGameData.DecoData.Deco.ContainsKey(item.Code))
+        {
+            if (StaticManager.Backend.backendGameData.DecoData.Deco[item.Code])
+            {
+                state = ContensState.on;
+            }
+            else
+            {
+                state = ContensState.off;
+            }
+        }
+        else
+        {
+            state = ContensState.unPurchase;
+        }
+    }
 }

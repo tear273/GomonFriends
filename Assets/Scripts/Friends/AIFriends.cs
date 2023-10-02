@@ -19,8 +19,8 @@ public class AIFriends : MonoBehaviour
     [SerializeField]
     CharacterController controller;
 
-    [SerializeField]
-    Animator animator;
+    
+    public Animator animator;
 
     [SerializeField]
     NavMeshAgent nav;

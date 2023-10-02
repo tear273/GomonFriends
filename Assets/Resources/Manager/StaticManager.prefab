@@ -315,6 +315,7 @@ MonoBehaviour:
   loadingObject: {fileID: 1576171300024949655, guid: e2d9757659f0b4c60b96299a22356c01, type: 3}
   origin_ComonPopup: {fileID: 4072450545238826238, guid: 2e1a7679cf8bd45a6b0b97e9e33d1e90, type: 3}
   alertUI: {fileID: 0}
+  currState: 0
 --- !u!1 &4541506037993620868
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,6 +358,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 674ab5a4efd344f6782cc33c1b8e2c2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLoading: 0
+--- !u!1 &5155089235407549825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 318321820013822080}
+  - component: {fileID: 3262208475836833095}
+  m_Layer: 0
+  m_Name: SkinChart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &318321820013822080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5155089235407549825}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5462145237655390953}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3262208475836833095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5155089235407549825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8451a7f83e8e345a2b2b72c0c0260315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isLoading: 0
@@ -438,6 +484,7 @@ Transform:
   - {fileID: 3860272557298272882}
   - {fileID: 5463347489084318727}
   - {fileID: 9034970294019211464}
+  - {fileID: 318321820013822080}
   m_Father: {fileID: 4929661850323896794}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -458,6 +505,7 @@ MonoBehaviour:
   friendsChart: {fileID: 3443565216356352548}
   ganetStoreChart: {fileID: 3453856909163723599}
   boxChart: {fileID: 8748601546766186125}
+  skinChart: {fileID: 3262208475836833095}
 --- !u!1 &5823878844193536264
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,3 +872,4 @@ MonoBehaviour:
   - com.gomon.projectg.ganet_200
   - com.gomon.projectg.ganet_500
   - com.gomon.projectg.ganet_1000
+  environment: production

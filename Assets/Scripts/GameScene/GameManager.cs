@@ -149,6 +149,23 @@ public class GameManager : Singletone<GameManager>
         {
 			Friends.Find(obj => obj.name.Equals(key)).SetActive(StaticManager.Backend.backendGameData.FriendsData.Friends[key]);
 		}
+
+		foreach(string key in StaticManager.Backend.backendGameData.FriendsData.ConnectSkin.Keys)
+		{
+			Transform t = Friends.Find(obj => obj.name == key).transform;
+
+			for(int i=0; i<t.childCount; i++)
+			{
+				bool check = t.GetChild(i).name == StaticManager.Backend.backendGameData.FriendsData.ConnectSkin[key];
+                if (check)
+                {
+                    t.GetComponent<AIFriends>().animator = t.GetChild(i).GetComponent<Animator>();
+                }
+
+
+                t.GetChild(i).gameObject.SetActive(check);
+			}
+		}
 		SetFrindsNum();
 		
 	}
@@ -377,6 +394,14 @@ public class GameManager : Singletone<GameManager>
 	{
 		print("OnLoadTotalStepCount = " + totalStepCount);
 		print("Pedometor = " + StaticManager.Backend.backendGameData.UserData.Pedometor);
+		int step = totalStepCount - (StaticManager.Backend.backendGameData.UserData.PurchaseFriendShipStar);
+		if (step < 0)
+        {
+			StaticManager.Backend.backendGameData.UserData.PurchaseFriendShipStar = 0;
+			StaticManager.Backend.backendGameData.UserData.SaveLocalData();
+
+		}
+
 		StartCoroutine(SetText(totalStepCount - (StaticManager.Backend.backendGameData.UserData.PurchaseFriendShipStar)));
 
 	}

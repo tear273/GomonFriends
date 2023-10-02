@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Store_Background : MonoBehaviour
+public class Store_Skin : MonoBehaviour
 {
     [SerializeField]
     GameObject exit;
@@ -20,28 +20,31 @@ public class Store_Background : MonoBehaviour
     [SerializeField]
     UILabel purchase_Price_Label;
     [SerializeField]
-    UITexture priceType_Texture;
-
-    [SerializeField]
-    UIButton purchase_btn;
-    [SerializeField]
     UITexture purchase_Image;
 
     [SerializeField]
-    Texture frendship;
-    [SerializeField]
-    Texture ganet;
+    UIButton purchase_btn;
 
-    DecoChart.Item item;
-    public void SetData(DecoChart.Item item)
+
+    SkinChart.Item item;
+
+    public void SetData(SkinChart.Item item)
     {
+        this.item = item;
+
         exit_Name_Label.text = item.Name;
         purchase_Name_Label.text = item.Name;
-        purchase_Price_Label.text = "X " + item.Price;
-        priceType_Texture.mainTexture = item.From == 1 ? frendship : ganet;
-        this.item = item;
-        state = StaticManager.Backend.backendGameData.DecoData.Deco.ContainsKey(item.Code) ? ContensState.on : ContensState.unPurchase;
-        Texture image = Resources.Load<Texture>("UI/Deco/" + item.PurhaseTexturePath);
+        purchase_Price_Label.text = item.Price;
+        if (StaticManager.Backend.backendGameData.FriendsData.Skin.ContainsKey(item.OriginCode))
+        {
+            state = StaticManager.Backend.backendGameData.FriendsData.Skin[item.OriginCode].Contains(item.Code) ? ContensState.on : ContensState.unPurchase;
+        }
+        else {
+            state = ContensState.unPurchase;
+
+        }
+
+        Texture image = Resources.Load<Texture>(item.ResourcePath);
         exist_Image.mainTexture = image;
         purchase_Image.mainTexture = image;
     }
@@ -68,16 +71,16 @@ public class Store_Background : MonoBehaviour
         }
     }
 
-    void OnClickPurchase_Btn()
+    public void OnClickPurchase_Btn()
     {
         StaticManager.Sound.PlaySounds(SoundsType.BUTTON);
         PurchasePopup_Info info = new PurchasePopup_Info();
         info.info = item.Name + "을\n해당 가격에 구매 하시겠습니까?";
-        info.price =  item.Price.ToString();
-        info.moneyType = item.From;
+        info.price = item.Price;
+        info.moneyType = 0;
         info.thumbnail = exist_Image.mainTexture;
         info.func = () => {
-            int price = item.Price;
+            int price = int.Parse(item.Price);
             if (StaticManager.Backend.backendGameData.UserData.Ganet >= price)
             {
                 var cal = StaticManager.Backend.backendGameData.UserData.Ganet -= price;
@@ -86,19 +89,20 @@ public class Store_Background : MonoBehaviour
                 {
                     if (callback.IsSuccess())
                     {
-                        StaticManager.Backend.backendGameData.DecoData.SetDeco(item.Code);
-                        StaticManager.Backend.backendGameData.DecoData.Update((callback) =>
+                        StaticManager.Backend.backendGameData.FriendsData.SetSkin(item.OriginCode,item.Code);
+                        StaticManager.Backend.backendGameData.FriendsData.Update((callback) =>
                         {
                             if (callback.IsSuccess())
                             {
                                 GameManager.Instance.Ganet_Label.text = StaticManager.Backend.backendGameData.UserData.Ganet.ToString();
                                 state = ContensState.on;
                                 StaticManager.UI.AlertUI.OpenUI("Info", item.Name + " 구매 완료!");
+
                                 GameManager.Instance.FriendsPurchase_Popup.gameObject.SetActive(false);
                             }
                             else
                             {
-                                StaticManager.Backend.backendGameData.DecoData.Deco.Remove(item.Code);
+                                StaticManager.Backend.backendGameData.FriendsData.Skin[item.OriginCode].Remove(item.Code);
                             }
                         });
                     }
@@ -119,11 +123,19 @@ public class Store_Background : MonoBehaviour
         GameManager.Instance.ShowPurchasePopup(info);
     }
 
-    public void SetDataState()
+    public void ReSettingFriends()
     {
-        priceType_Texture.mainTexture = item.From == 1 ? frendship : ganet;
-        state = StaticManager.Backend.backendGameData.DecoData.Deco.ContainsKey(item.Code) ? ContensState.on : ContensState.unPurchase;
-        Texture image = Resources.Load<Texture>("UI/Deco/" + item.PurhaseTexturePath);
+
+        if (StaticManager.Backend.backendGameData.FriendsData.Skin.ContainsKey(item.OriginCode))
+        {
+            state = StaticManager.Backend.backendGameData.FriendsData.Skin[item.OriginCode].Contains(item.Code) ? ContensState.on : ContensState.unPurchase;
+        }
+        else
+        {
+            state = ContensState.unPurchase;
+
+        }
+        Texture image = Resources.Load<Texture>(item.ResourcePath);
         exist_Image.mainTexture = image;
         purchase_Image.mainTexture = image;
     }
