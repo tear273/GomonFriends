@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f0ab10cdd89b5d44da4eed0349341a32
+guid: 909c6394c9c1ef94da20f700a6af6543
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -90,7 +90,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: Hood+Ani
+    rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
